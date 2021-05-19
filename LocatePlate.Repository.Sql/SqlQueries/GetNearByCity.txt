@@ -1,0 +1,28 @@
+﻿USE [LocatePlate]
+GO
+/****** Object:  StoredProcedure [dbo].[[NearByCity]]  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Sarabjeet Singh
+-- Create Date: 1/24/2021
+-- Description: set my city
+-- =============================================
+Alter PROCEDURE [dbo].[NearByCity] --30.220977,74.957258
+(@Latitude DECIMAL(10,6),@Longitude  DECIMAL(10,6) ) 
+AS
+BEGIN
+    SET NOCOUNT ON
+            select   
+			Id =r.Id, 
+            r.LocationId,
+			r.CityName,
+            dbo.CalculateDistance(@Latitude, @Longitude, r.Latitude, r.Longitude) as Distance            
+            from dbo.Restaurants r  
+            where (ABS(@Latitude - r.Latitude) < .5)  -- Lines of latitude are ~69 miles apart.   
+            and (ABS(@Longitude - r.Longitude) < .6)  -- Lines of longitude in the U.S. are ~53 miles apart.             
+            order by Distance     
+
+END

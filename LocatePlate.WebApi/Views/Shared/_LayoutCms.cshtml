@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cms</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/vendors/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/vendors/chartist/chartist.min.css">
+    <!-- End plugin css for this page -->
+    <link rel="stylesheet" href="~/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/jquery-weekdays.css" />
+    <link rel="stylesheet" href="~/css/jquery.fileuploader.min.css" />
+    <link rel="stylesheet" href="~/font/font-fileuploader.css" />
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+    @*@Html.Raw(JavaScriptSnippet.FullScript)*@
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <!-- partial -->
+        <div class="page-body-wrapper col-lg-12 col-12 d-flex flex-row">
+            <nav class="sidebar" id="sidebarVisible">
+                <div class="overlay position-absolute"></div>
+                <div class="text-center pt-4 pb-3 position-relative" style="z-index: 2;border-bottom: 1px solid rgba(255, 255, 255, 0.11)">
+                    <h3 class="text-white">Locate Plate CMS</h3>
+                </div>
+                <ul class="nav overlay-2 my-4">
+                    <li class="nav-item nav-category"><a href="/Cms/Section" class="nav-link w-100 text-white pl-3"><i class="icon-cup text-white font-16px mr-4"></i>Section</a></li>
+                    <li class="nav-item nav-category"><a href="/Cms/PageLayout" class="nav-link w-100 text-white"><i class="icon-cup text-white font-16px mr-4"></i>Page Layout</a></li>
+                    <li class="nav-item nav-category"><a href="/Cms/Page" class="nav-link w-100 text-white"><i class="icon-cup text-white font-16px mr-4"></i>Page</a></li>
+                </ul>
+            </nav>
+            <div class="main-panel d-flex align-items-center flex-grow-1">
+                <div class="bg-white w-100">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-white container-fluid">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="align-items-center justify-content-between desktop-nav ml-auto">
+                                <div>
+                                    <partial name="_LoginPartial" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="justify-content-between align-items-center h-62px mobile-nav">
+                            <div class="font-weight-bold text-primary">@User.Identity.Name</div>
+                            <div class="button-position">
+                                <button id="toggleButton" type="button">
+                                    <span class="navbar-toggler-icon">
+                                        <i class="fa fa-bars font-20px text-primary"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="sidebarHidden" class="d-none">
+                            <div class="sidebar sidebar-offcanvas mr-3" id="sidebar">
+                                <div class="overlay position-absolute"></div>
+                                <div class="text-left pl-5 pt-3 pb-2 position-relative" style="z-index: 2;border-bottom: 1px solid rgba(255, 255, 255, 0.11)">
+                                    <h3 class="text-white">Locate Plate</h3>
+                                </div>
+                                <ul class="nav overlay-2 my-4">
+                                    <li class="nav-item nav-category"><a href="/Cms/Section" class="nav-link w-100 text-white"><i class="icon-cup text-white font-16px mr-4"></i>Section</a></li>
+                                    <li class="nav-item nav-category"><a href="/Cms/PageLayout" class="nav-link w-100 text-white"><i class="icon-cup text-white font-16px mr-4"></i>Page Layout</a></li>
+                                    <li class="nav-item nav-category"><a href="/Cms/Page" class="nav-link w-100 text-white"><i class="icon-cup text-white font-16px mr-4"></i>Page</a></li>
+                                    <li class="nav-item nav-category">
+                                        <span class="nav-link">
+                                            <i class="icon-speech text-white mr-3"></i>
+                                            <form data-ajax="true" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Dashboard", new { area = "" })">
+                                                <button type="submit" class="nav-link btn btn-link font-16px text-white border-0">Logout</button>
+                                            </form>
+                                        </span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        @*  </div>*@
+                    </nav>
+                </div>
+                <div class="content-wrapper container-fluid my-5">
+                    <div class="row">
+                        <div class="col-md-3" id="mobile-col-3">
+                        </div>
+                        <div class="col-md-9 grid-margin stretch-card pb-5 pl-0" id="mobile-col-9">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+                <script src="~/lib/jquery/dist/jquery.js"></script>
+                <script src="~/js/jquery.validate.min.js"></script>
+                <script src="~/js/jquery.unobtrusive-ajax.js"></script>
+                <script src="~/js/site.js" asp-append-version="true"></script>
+                <script src="~/js/custom-cms.js"></script>
+                <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+                @RenderSection("Scripts", required: false)
+
+</body>
+</html>

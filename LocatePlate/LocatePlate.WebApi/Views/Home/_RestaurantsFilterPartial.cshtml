@@ -1,0 +1,66 @@
+﻿@model List<LocatePlate.Model.Search.SearchResult>;
+
+@{
+    Layout = null;
+    var host = $"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}";
+}
+
+@foreach (var item in Model)
+{
+    <div class="mobile-border-top-bottom py-2">
+        <div class="card flex-row border-0 px-12">
+            <div class="card-img w-30">
+                <div class="position-relative">
+                    <a href="@host/@item.RestaurantUrl">
+                        @if (!string.IsNullOrEmpty(item.Images))
+                        {
+                            <img class="card-img-top" src="@item.Images" onerror="this.onerror=null;this.src='@host/images/website/hotelicon.jpg';" alt="Card image cap">
+                        }
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0 pl-3">
+                <a href="@host/@item.RestaurantUrl">
+                    <h5 class="card-title font-25 w-100 text-dark text-capitalize">@item.Name </h5>
+                </a>
+                <div class="d-flex align-items-center">
+                    @await Html.PartialAsync("_Rating", item.RatingCount)
+                    <span class="font-14 text-grey rating-review-count">
+                        @item.ReviewCount Reviews
+                    </span>
+                </div>
+                <div class="font-14 text-grey d-flex mt-2 flex-wrap">
+                    <div class="cuisines-card-div mr-2 d-flex">
+                        <div>
+                            <i class="fa fa-cutlery"></i>
+                        </div>
+                        <div>
+                            Cusines :  @item.Cuisine
+                        </div>
+                    </div>
+                    @*<div class="money-card-div d-flex">
+                            <div>
+                                <i class="fa fa-money"></i>
+                            </div>
+                            <div>
+                                Cost for Two : <span class="currency">$</span> @item.CostForTwo approx
+                            </div>
+                        </div>*@
+                </div>
+                <div class="card-text font-14 text-grey d-flex location-card-div">
+                    <div>
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <div>
+                        @item.FullAddress
+                    </div>
+                </div>
+                <div class="desktop-time-slot">
+                    @await Html.PartialAsync("_TimeSlots", item)
+
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("_TimeSlotsMobile", item)
+    </div>
+}

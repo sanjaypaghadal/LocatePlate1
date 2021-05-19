@@ -1,0 +1,124 @@
+﻿@model LocatePlate.Model.Cms.Modules.Restaurants.CardsListingModule
+@{ var thispartial = System.Guid.NewGuid();}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">Enter Name</label>
+    <input asp-for="Name" name="@Convert.ToString(ViewBag.prefix)Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div id="@Convert.ToString(thispartial)restaurantContainer"></div>
+<div id="@Convert.ToString(thispartial)selectedrestaurants"></div>
+
+<div id="resturant-bucket">
+    <h2>Selected Restaurants</h2>
+    <div class="py-4 scroll-div">
+        <div class="table-responsive border rounded scroll-div">
+            <table class="table" id="resturant-bucket-table">
+                <thead class="text-center">
+                    <tr>
+                        <th class="font-weight-bold"> Name</th>
+                        <th class="font-weight-bold">Remove Resturant </th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+
+                    @for (int i = 0; i < Model.Restaurants.Count; i++)
+                    {
+                        var resturant = Model.Restaurants[i];
+                        <tr id="resturant-bucket-@resturant.Id">
+                            <td>
+                                @resturant.Name
+                                <input type="hidden" name="@Convert.ToString(ViewBag.prefix)Restaurants[@i].Id" value="@resturant.Id" />
+                                <input type="hidden" name="@Convert.ToString(ViewBag.prefix)Restaurants[@i].Name" value="@resturant.Name" />
+                            </td>
+                            <td>
+                                <input type="button" data-target-id="@resturant.Id" data-target-block="resturant-bucket-@resturant.Id" value="Remove" class="removerestauranttobucket btn btn-danger px-3 py-2" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (Model?.Restaurants?.Count != null && Model.Restaurants.Count > 0)
+{
+    var Ids = "";
+    Model.Restaurants.ForEach(c => Ids += c.Id + ",");
+    Ids = Ids.TrimEnd(',');
+    <input type="hidden" name="hdnresaurtantSelectids" value="@Ids" />
+}
+<input type="hidden" asp-for="PageId" name="@Convert.ToString(ViewBag.prefix)PageId" />
+<input type="hidden" asp-for="SectionId" name="@Convert.ToString(ViewBag.prefix)SectionId" />
+<input type="hidden" asp-for="Markup" name="@Convert.ToString(ViewBag.prefix)Markup" />
+
+
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        init(0, 10);
+        function init(pageindex, pagesize) {
+            var count = `@Model.Restaurants.Count()`;
+            $('#@Convert.ToString(thispartial)restaurantContainer').load(`/Cms/Page/RestaurantModulesRestaurantSelection/@Convert.ToString(ViewBag.prefix)/@Model.PageId/${pageindex}/${pagesize}`, function () {
+                $(".addrestauranttobucket").on('click', function () {
+                    var id = $(this).attr('data-id');
+                    var name = $(this).attr('data-restaurant-name');
+
+                    var markup = `<tr id="resturant-bucket-${id}">
+                            <td>
+                                ${name}
+                                 <input type="hidden" name="@Convert.ToString(ViewBag.prefix)Restaurants[${count}].Id" value="${id}" />
+                                <input type="hidden" name="@Convert.ToString(ViewBag.prefix)Restaurants[${count}].Name" value="${name}" />
+                            </td>
+                            <td>
+                                <input type="button" data-target-block="resturant-bucket-${id}" value="Remove" class="removerestauranttobucket btn btn-danger px-3 py-2" />
+                            </td>
+                        </tr>`;
+                    count++;
+                    $('#resturant-bucket-table tr:last').after(markup);
+                    $(this).attr('disabled', 'true');
+                    $(this).val('Added');
+
+                    //$("#resturant-bucket").append(markup);
+                });
+
+                $(".removerestauranttobucket").on('click', function () {
+                    var id = $(this).attr('data-target-block');
+                    var restId = $(this).attr('data-target-id');
+                    $(`#${id}`).remove();
+                    var eleButton = $(`input[data-id="${restId}"]`);
+                    if (eleButton != undefined) {
+                        eleButton.removeAttr('disabled');
+                        eleButton.val('Add');
+                    }
+                });
+
+            });
+        }
+
+        $(".paging-restaurant").click(function () {
+            var pageIndex = $(this).attr("data-page-index");
+            var pageSize = $(this).attr("data-page-size");
+            init(pageIndex, pageSize);
+
+        });
+        var hndselectedRestaurantIds = $("#hdnresaurtantSelectids").val();
+        if (hndselectedRestaurantIds != undefined) {
+            var list = hndselectedRestaurantIds.split(',');
+            hndselectedRestaurantIds.forEach(setAddedText);
+            function setAddedText(item, index) {
+                var eleButton = $(`input[data-id="${item}"]`);
+                if (eleButton != undefined) {
+                    eleButton.attr('disabled', 'true');
+                    eleButton.val('Added');
+                }
+            }
+        }
+    });
+</script>

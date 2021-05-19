@@ -1,0 +1,134 @@
+﻿USE [DB_A6F0B4_LocatePlate]
+GO
+/****** Object:  StoredProcedure [dbo].[LocatePlateSearch]    Script Date: 2/16/2021 12:28:08 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+      -- Author:      <Author, , Name>
+      -- Create Date: <Create Date, , >
+      -- Description: <Description, , >
+      -- =============================================
+      ALTER PROCEDURE [dbo].[LocatePlateSearch] --Null,'CityCard',Null,'8ec41d57-ee0e-471f-a53c-8042cb3475c2',Null,Null,Null,1,10,'',0,0,0,2
+	  ( 		-- Add the parameters for the stored procedure here
+      @query varchar(100),
+	  @DealUrl varchar(50),
+	  @Tags varchar(50),
+	  @location uniqueidentifier,
+	  @Cuisine varchar(100),
+	  @Categories varchar(100),
+	  @FoodType varchar(100),
+	  @PageNumber int,
+	  @RowsOfPage int,
+	  @SortingCol AS VARCHAR(100),
+      @SortType AS int,
+	  @Latitude  DECIMAL(10,6),
+      @Longitude  DECIMAL(10,6),
+	 -- @ReservationDay int,
+	  @PartySize int) AS 
+      BEGIN
+         -- SET NOCOUNT ON added to prevent extra result sets from
+         -- interfering with SELECT statements.
+         SET
+            NOCOUNT 
+            ON 
+			SELECT
+			   Id= NEWID(),
+		       RestaurantId = r.Id,
+               Name= r.Name,
+               CityName= r.CityName,
+			   LocationId= r.LocationId,
+               Url = r.Url,
+			   Dish=([dbo].[DistinctList]((STRING_AGG(ISNULL(m.Name,''), ',')),',')),
+               FoodType = ([dbo].[DistinctList]((STRING_AGG( ISNULL(m.FoodNatureName,''), ',')),',')),
+               FoodCategory = ([dbo].[DistinctList]((STRING_AGG( ISNULL(m.MenuCategoryName,''), ',')),',')),
+			   Images= r.CoverImages,
+			   Cuisine=r.Cuisine,
+			   CostForTwo=r.CostForTwo,
+			   FullAddress=r.FullAddress,
+			   UserId = r.UserId,
+			   RatingCount= AVG(ra.Rating),
+			   ReviewCount = sum(case when re.Review != null and re.Review != '' then 1 else 0 end),
+			   AllCount = COUNT(*) OVER(),
+			   dbo.CalculateDistance(@Latitude, @Longitude, r.Latitude, r.Longitude) as Distance
+            FROM
+              [dbo].[Restaurants] as r 
+			   INNER JOIN [dbo].Discounts as d on d.RestaurantId = r.Id
+			   Left OUTER JOIN [dbo].Capacities as c on c.RestaurantId = r.Id 
+			 --  INNER JOIN [dbo].Timings as t on t.RestaurantId = r.Id 
+			--   INNER JOIN [dbo].Bookings as B on d.RestaurantId = r.Id 
+               Left OUTER JOIN [dbo].Menus as m on m.RestaurantId = r.Id 
+			   LEFT OUTER JOIN [dbo].Ratings AS ra ON ra.RestaurantId = r.Id 
+			   LEFT OUTER JOIN [dbo].Reviews AS re ON re.RestaurantId = r.Id 
+            where
+			 (Tags like '%' + @query + '%' 
+               OR Cuisine like '%' + @query + '%' 
+               OR r.Name like '%' + @query + '%' 
+               OR r.FullAddress like '%' + @query + '%' 
+               OR r.CityName like '%' + @query + '%' 
+               OR r.ProvinceName like '%' + @query + '%' 
+               OR r.CountryName like '%' + @query + '%' 
+               OR r.Recommendations like '%' + @query + '%' 
+               OR r.Specialities like '%' + @query + '%' 
+               OR r.About like '%' + @query + '%' 
+               OR m.Name like '%' + @query + '%' 
+               OR m.FoodNatureName like '%' + @query + '%' 
+               OR m.MenuCategoryName like '%' + @query + '%'
+			   OR @query IS NULL)
+			   AND  (r.LocationId=@location)
+			   AND  (d.DealUrl=@DealUrl or @DealUrl IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](r.Tags, ',') AS T1 INNER JOIN [dbo].[Split](@Tags, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @Tags IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](r.Cuisine, ',') AS T1 INNER JOIN [dbo].[Split](@Cuisine, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @Cuisine IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](r.ResturantTypeName, ',') AS T1 INNER JOIN [dbo].[Split]( @Categories, ',') AS T2 on T1.[Item] = T2.[Item]) OR   @Categories IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](m.FoodNatureName, ',') AS T1 INNER JOIN [dbo].[Split]( @FoodType, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @FoodType IS NULL)
+		       And  ((ABS(@Latitude - r.Latitude) < .5) or @Latitude IS NULL ) -- Lines of latitude are ~69 miles apart.   
+               And  ((ABS(@Longitude - r.Longitude) < .6) or @Longitude IS NULL ) -- Lines of longitude in the U.S. are ~53 miles apart. 
+			   AND  (r.Id=c.RestaurantId)
+			   --(@PartySize=0  And (r.Id=c.RestaurantId))
+			   --Or
+		        And  ((@PartySize=0 )  -- NOT SELECTED
+
+				OR	  (@PartySize<11 And c.size=@PartySize) -- If selected below 10
+			    OR    (@PartySize>10 And c.size>=@PartySize) -- If select below
+				  )
+			  --AND  (t.Day=@ReservationDay)
+            GROUP BY
+               r.id,
+               r.Name,
+               r.Url,
+               r.CityName,
+			   r.LocationId,
+			   r.CoverImages,
+			   r.Cuisine,
+			   r.CostForTwo,
+			   r.FullAddress,
+			   r.CreatedDate,
+			   r.UserId,
+			   r.Latitude,
+			   r.Longitude
+			  order by 
+			   CASE WHEN @SortingCol = '2'  THEN dbo.CalculateDistance(@Latitude, @Longitude, r.Latitude, r.Longitude) END,
+			   CASE WHEN @SortingCol = '3'  THEN dbo.CalculateDistance(@Latitude, @Longitude, r.Latitude, r.Longitude) END DESC,
+			   CASE WHEN @SortingCol = '1' AND @SortType =0 THEN AVG(ra.Rating) END,
+			   CASE WHEN @SortingCol = '1' AND @SortType =1 THEN AVG(ra.Rating) END DESC,
+               CASE WHEN @SortingCol = '4' THEN r.CostForTwo END,
+			   CASE WHEN @SortingCol = '5' THEN r.CostForTwo END DESC
+               OFFSET (@PageNumber-1)*@RowsOfPage ROWS
+               FETCH NEXT @RowsOfPage ROWS ONLY
+END
+
+
+--CREATE FUNCTION LMI_IsSingleCharacterRepeated (@PartySize int)
+--RETURNS BIT
+--AS 
+--BEGIN
+--    DECLARE @PartySize int
+--    BEGIN
+--        IF @PartySize >0
+--             RETURN 0
+--        ELSE If
+--            RETURN 0
+--    END
+--    RETURN 1
+--END;
+--GO

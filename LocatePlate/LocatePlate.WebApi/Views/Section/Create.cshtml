@@ -1,0 +1,44 @@
+﻿@model LocatePlate.Model.Cms.Section
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutCms.cshtml";
+}
+
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Section
+            </h4>
+        </div>
+    </div>
+    <div class="card-body px-5 py-5">
+        <form data-ajax="true" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Markup" class="control-label"></label>
+                <input asp-for="Markup" class="form-control" />
+                <span asp-validation-for="Markup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

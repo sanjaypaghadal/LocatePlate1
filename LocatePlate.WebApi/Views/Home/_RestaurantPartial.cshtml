@@ -1,0 +1,120 @@
+﻿@model LocatePlate.Model.Cms.Modules.Restaurants.CardsListingModule
+@{var host = $"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}"; }
+
+<section class="container position-relative">
+    <div class="my-5">
+        <div class="justify-content-between align-items-baseline all-restaurant-heading pb-3">
+            <h1 class="mobile-heading text-center"> @Model.Name</h1>
+            @if (Model.RestaurantDetails.Count > 5)
+            {
+                <div>
+                    <a href="/restaurants/search?query=" class="hide-500 bold-500 font-18">
+                        See More
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="card-restaurants">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    @foreach (var restaurant in Model.RestaurantDetails)
+                    {
+                        var coverImages = restaurant.MobileCoverImage;
+                    <div class="swiper-slide col-lg-4 col-md-4 col-sm-12">                       
+                            <div class="card-desktop border-radius-4">
+                                <a href="@host/@restaurant.CityName/restaurant/@restaurant.Url.ToLower()">
+                                    <div class="card-img">
+                                        <div class="position-relative">
+                                            <img class="card-img-top border-radius-4" src="@coverImages" alt="@restaurant.Name">
+                                        </div>
+                                    </div>
+                                    <div class="card-body py-2 px-3 text-left">
+                                        <h5 class="card-title mb-1 font-18 text-dark">@restaurant.Name</h5>
+                                        <div class="d-flex align-items-center">
+                                            @await Html.PartialAsync("_Rating", restaurant.RatingCount)
+                                            <span class="font-12 text-grey">
+                                                @restaurant.ReviewCount Reviews
+                                            </span>
+                                        </div>
+                                        <div class="font-12 text-grey d-flex mt-1">
+                                            <div>
+                                                <i class="fa fa-cutlery mr-2"></i>
+                                            </div>
+                                            <div class="text-capitalize">
+                                                @restaurant.Cuisine
+                                            </div>
+                                        </div>
+                                        <div class="card-text font-12 text-grey d-flex">
+                                            <div>
+                                                <i class="fa fa-map-marker mr-10"></i>
+                                            </div>
+                                            <div class="card-rest-address-limit text-capitalize">
+                                                @restaurant.FullAddress
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                    </div>
+                    }
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div class="card-restaurants-mobile">
+            <div class="row">
+                <div class="col-md-3">
+                    @foreach (var restaurant in Model.RestaurantDetails)
+                    {
+                        var coverImages = restaurant.MobileCoverImage;
+                        <div class="card border-bottom pb-3">
+                            <div class="card-img border-radius-4">
+                                <div class="position-relative">
+                                    <a href="">
+                                        <img class="card-img-top" src="@coverImages" alt="@restaurant.Name">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 pl-2">
+                                <a href="@host/@restaurant.CityName/restaurant/@restaurant.Url.ToLower()">
+                                    <h5 class="card-title mb-0 font-16">The Immigrant Cafe</h5>
+                                </a>
+                                <div class="d-flex align-items-center">
+                                    @await Html.PartialAsync("_Rating", restaurant.RatingCount)
+                                    <span class="font-12 text-grey">
+                                        @restaurant.ReviewCount Reviews
+                                    </span>
+                                </div>
+                                <div class="font-12 text-grey d-flex mt-2">
+                                    <div>
+                                        <i class="fa fa-cutlery mr-2"></i>
+                                    </div>
+                                    <div>
+                                        @restaurant.Cuisine
+                                    </div>
+                                </div>
+                                <div class="card-text font-12 text-grey d-flex">
+                                    <div>
+                                        <i class="fa fa-map-marker mr-10"></i>
+                                    </div>
+                                    <div>
+                                        @restaurant.FullAddress
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (Model.RestaurantDetails.Count > 5)
+                {
+                    <div class="col-md-3">
+                        <div class="text-center py-3">
+                            <a href="" class="btn bg-primary text-white see-more-btn bold-600">See More</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,69 @@
+﻿USE [LocatePlate]
+GO
+/****** Object:  StoredProcedure [dbo].[LocatePlateSearchTags]    Script Date: 2/6/2021 3:06:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+      -- Author:      <Author, , Name>
+      -- Create Date: <Create Date, , >
+      -- Description: <Description, , >
+      -- =============================================
+      ALTER PROCEDURE [dbo].[LocatePlateSearchTags] ( 		-- Add the parameters for the stored procedure here
+      @query varchar(25),
+	  @location uniqueidentifier,
+	  @PageNumber int,
+	  @RowsOfPage int,
+	  @SortingCol AS VARCHAR(100),
+      @SortType AS int) AS 
+      BEGIN
+         -- SET NOCOUNT ON added to prevent extra result sets from
+         -- interfering with SELECT statements.
+         SET
+            NOCOUNT 
+            ON 
+            SELECT
+			   Id= NEWID(),
+		       RestaurantId = r.Id,
+               Name= r.Name,
+               CityName= r.CityName,
+			   LocationId= r.LocationId,
+               Url = r.Url,
+               Dish = '',
+               FoodType = '',
+               FoodCategory = '',
+			   Images= r.CoverImages,
+			   Cuisine=r.Cuisine,
+			   CostForTwo=r.CostForTwo,
+			   FullAddress=r.FullAddress,
+			   UserId= r.UserId,
+			   RatingCount= AVG(ra.Rating),
+			   ReviewCount = sum(case when re.Review != null and re.Review != '' then 1 else 0 end),
+			   AllCount = COUNT(*) OVER()
+            FROM
+               [dbo].[Restaurants]  as r
+			      LEFT OUTER JOIN [dbo].Ratings AS ra ON ra.RestaurantId = r.Id 
+				  LEFT OUTER JOIN [dbo].Reviews AS re ON re.RestaurantId = r.Id 
+            where
+               Tags like '%' + @query + '%' 
+			   and LocationId=@location
+			GROUP BY
+               r.id,
+               r.Name,
+               r.Url,
+               r.CityName,
+			   r.LocationId,
+			   r.CoverImages,
+			   r.Cuisine,
+			   r.CostForTwo,
+			   r.FullAddress,
+			   r.CreatedDate,
+			   r.UserId
+			order by 
+			   CASE WHEN @SortingCol = 'Rating' AND @SortType =0 THEN AVG(ra.Rating) END ,
+			   CASE WHEN @SortingCol = 'Rating' AND @SortType =1 THEN AVG(ra.Rating) END DESC,
+               CASE WHEN @SortingCol = 'Newest' AND @SortType =0 THEN r.CreatedDate END ,
+               CASE WHEN @SortingCol = 'Newest' AND @SortType =1 THEN r.CreatedDate END DESC
+		 OFFSET (@PageNumber-1)*@RowsOfPage ROWS
+                FETCH NEXT @RowsOfPage ROWS ONLY 
+      END

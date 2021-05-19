@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Booking>
+
+@{
+    ViewData["Title"] = "Order History";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+<div class="border-top">
+</div>
+<section class="my-4">
+    <div class="container">
+        <div>
+            <h1>Order History</h1>
+        </div>
+        <div class="row section-order-history my-4" style="min-height:500px">
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">
+                                        <img class="card-img-top" src="@item.Restaurant.MobileCoverImage" alt="@item.Restaurant.Name">
+                                    </div>
+                                    <div>
+                                        <h2 class="mb-0">@item.Restaurant.Name</h2>
+                                        <p>@item.Restaurant.FullAddress</p>
+                                    </div>
+                                </div>
+                                <div class="font-16">
+                                    @if (item.IsAccept == true)
+                                    {
+                                        <button type="button" class="btn btn-primary font-weight-bold my-3" wfd-id="53">Accepted</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-secondary font-weight-bold my-3" wfd-id="54">Pending</button>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Order Number</h5>
+                                <p class="card-text">@item.BillId</p>
+                                <h5 class="card-title">Date</h5>
+                                <p class="card-text">@item.Date.Date.ToLongDateString()</p>
+                                <h5 class="card-title">Time</h5>
+                                <p class="card-text">@item.StartTime.ToLongTimeString()</p>
+                                @if (item.PartySize > 0)
+                                {
+                                    <h5 class="card-title">Party</h5>
+                                    <p class="card-text">@item.PartySize</p>
+                                }
+                                @if (item.TotalPrice > 0)
+                                {
+                                    <h5 class="card-title">Total Amount</h5>
+                                    <p class="card-text">$@item.TotalPrice</p>
+                                }
+                                @if (item?.MenuItems != null && item.MenuItems.Count > 0)
+                                {
+                                    <h5 class="card-title">Items</h5>
+                                    @foreach (var menuItem in item.MenuItems.Take(2))
+                                    {
+                                        <p class="card-text mb-0">@(menuItem.Id) x @(menuItem.Name)</p>
+                                    }
+                                }
+                            </div>
+                            <div class="card-footer justify-content-between">
+                                <button type="button" class="btn bg-outline-primary text-primary float-right">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h2>No order history</h2>
+            }
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,73 @@
+﻿@model Booking
+
+<section class="py-4">
+    <div class="order-confirmation-section bg-white">
+        <div class="">
+            <header class="p-2 bg-primary text-center">
+                <h1 class="text-white mb-0 font-20 text-uppercase">Booking Details </h1>
+            </header>
+            <div class="p-4">
+                <div class="mb-3">
+                    <h2>@Model.ReservationModel.RestaurantName</h2>
+                    <h4>Bill Number : @Model.BillId</h4>
+                    <div class="d-flex">
+                        @if(Model.PartySize>0){
+                        <h4 class="mr-1">Table for @Model.PartySize</h4>
+                        }
+                        <h4>Timing : @Model.StartTimeDisplay</h4>
+                        @*<h4>Timing : string. @Model.StartTime </h4>*@
+                    </div>
+                </div>
+                <div>
+                    @if(Model?.MenuItems != null){
+
+                    <header class="bg-primary p-2 my-3">
+                        <h2 class="text-white mb-0 bold-600 font-16 text-uppercase"># Order Details </h2>
+                    </header>
+                    <div class="d-flex justify-content-between mb-2 align-items-center">
+                        <h3 class="bold-600">Description</h3>
+                        <h3 class="bold-600">Amount</h3>
+                    </div>
+                    @foreach(var item in Model.MenuItems)
+                    {
+                    <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                        <div>
+                            <h4 class="mb-0 bold-600 text-dark">@item.Name</h4>
+                            <h4 class="mb-0">@item.Price*@item.Quantity</h4>
+                        </div>
+                        <div>
+                            <h4 class="mb-0">$@Math.Round(item.Price*item.Quantity, 2)</h4>
+                        </div>
+                    </div>
+                    }
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="text-dark mb-0">SubTotal</h4>
+                        <h4 class="mb-0">$@Math.Round(Model.SubTotal, 2)</h4>
+                    </div>
+                    @if(Model.Discount>0.0){
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="text-dark mb-0">Discount</h4>
+                        <h4 class="mb-0">$@Math.Round(Model.Discount, 2)</h4>
+                    </div>
+                    }
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="text-dark mb-0">Total Tax</h4>
+                        <h4 class="mb-0">$@Math.Round(Model.TotalTax, 2)</h4>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2 border-top border-bottom py-2">
+                        <h3 class="text-dark mb-0 bold-600">Total</h3>
+                        <h3 class="mb-0">$@Math.Round(Model.TotalPrice, 2)</h3>
+                    </div>
+                    <form asp-action="reservation" asp-controller="Booking">
+                        <input type="hidden" name="restaurantId" value="@Model.RestaurantId" />
+                        <div class="text-center mt-4">
+                            <button class="btn btn-primary bold-600 text-uppercase" type="submit">Confirm Booking</button>
+                        </div>
+                    </form>
+                }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,50 @@
+html,
+.rubber-indicator {
+    width: 100%;
+}
+
+.weekdays-list {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    flex-direction: row;
+    text-align: center;
+}
+
+    .weekdays-list .weekdays-day {
+        position: relative;
+        display: block;
+        padding: 2% 5% 2% 5%;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #fff;
+        background-color: #E91E63;
+        border: 1px solid #dee2e6;
+        cursor: pointer;
+    }
+
+/*.weekdays-day:hover {
+    background-color: #E91E63;
+    font-weight: bold;
+    border: 1px solid white;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}*/
+
+/*.weekdays-list .weekday-selected {
+    background-color: #E91E63;
+    font-weight: bold;
+    color: #fff;
+    border: 1px solid white;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}*/
+
+.weekdays-list :first-child {
+    border-left: 1px solid #dee2e6;
+}
+
+.weekdays-list :last-child {
+    border-right: 1px solid #dee2e6;
+}

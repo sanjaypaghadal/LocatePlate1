@@ -1,0 +1,132 @@
+﻿@model LocatePlate.Model.Identity.User
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href='~/css/home-style.css' />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="~/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/jquery-ui.css" />
+    <link rel="stylesheet" href="~/vendors/simple-line-icons/css/simple-line-icons.css" />
+
+</head>
+<body class="bg-auth">
+    <div class="signup-page my-3">
+        <form id="register-data-form" asp-controller="/Account" asp-action="Register" method="post" class="p-3">
+            <h2 class="text-center text-center text-dark bold-600 py-3">
+                Sign up to Locate Plate
+            </h2>
+
+            <input type="hidden" name="ReturnUrl" class="returnurl">
+            <div asp-validation-summary="ModelOnly" id="register-data-form-summary" class="text-danger error-msg"></div>
+            @Html.AntiForgeryToken()
+            @if (ViewBag.Message != "")
+            {
+                <div class="mb-0 text-success success-msg px-3 py-2">@ViewBag.Message</div>
+            }
+            <div class="modal-body pt-0 pb-0">
+                <div class="form-group pt-2">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control font-14" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control font-14" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control font-14" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control font-14" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control font-14" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="IsAcceptedTermAndCondition" type="checkbox" class="form-check-input text-primary" data-val-required="The I Agree with the terms and conditions field is required." id="IsAcceptedTermAndCondition" name="IsAcceptedTermAndCondition">By signing up you agree to our <span class="font-weight-bold">Terms of Service &amp; Privacy Policy</span>
+                        <i class="input-helper"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0 mb-2 px-4">
+                <button type="submit" id="signup" class="btn btn-primary font-weight-bold btn-block p-2 btn-signup">Signup</button>
+            </div>
+        </form>
+    </div>
+    </div>
+    @*<form id="register-data-form" asp-controller="/Account" asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" class="returnurl" />
+            <div asp-validation-summary="ModelOnly" id="register-data-form-summary" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" type="text" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                <i class="fa fa-user signup-icon text-primary"></i>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="text" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <i class="fa fa-envelope signup-icon text-primary"></i>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="text" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <i class="fa fa-phone signup-icon font-20 text-primary" aria-hidden="true"></i>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <i class="fa fa-lock signup-icon font-20 text-primary" aria-hidden="true"></i>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <i class="fa fa-lock signup-icon font-20 text-primary" aria-hidden="true"></i>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" asp-for="IsAcceptedTermAndCondition" class="form-check-input text-primary" data-val="true" value="true">By signing up you agree to our <span class="font-weight-bold">Terms of Service & Privacy Policy</span>
+                    <i class="input-helper"></i>
+                </label>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0 mb-2 px-4">
+                <button type="submit" id="signup" class="btn text-white bg-primary font-weight-bold btn-block p-2 btn-signup">Signup</button>
+            </div>
+        </form>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/swiper-bundle.min.js"></script>
+    <script src="~/js/jquery.picEyes.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/home-custom.js"></script>
+    <script src="~/js/ClientSide.js"></script>
+
+
+</body>
+</html>

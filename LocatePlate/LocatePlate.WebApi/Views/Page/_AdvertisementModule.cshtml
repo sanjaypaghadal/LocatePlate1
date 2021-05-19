@@ -1,0 +1,20 @@
+﻿@model LocatePlate.Model.Cms.Modules.Advertisement.AdvertisementModule
+
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Advert" class="control-label"></label>
+            <input asp-for="Advert" class="form-control" name="@Convert.ToString(ViewBag.prefix)Advert" />
+            <span asp-validation-for="Advert" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" name="@Convert.ToString(ViewBag.prefix)Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="SectionId" name="@Convert.ToString(ViewBag.prefix)SectionId" />
+        <input type="hidden" asp-for="Markup" name="@Convert.ToString(ViewBag.prefix)Markup" />
+    </div>
+</div>
+

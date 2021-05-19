@@ -1,0 +1,157 @@
+﻿@model LocatePlate.Model.Cms.Page
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutCms.cshtml";
+}
+
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Page Manager
+            </h4>
+        </div>
+    </div>
+    <div class="card-body px-5 py-5">
+        <form asp-action="Create" enctype="multipart/form-data" class="py-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" name="Page.Id" />
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <select asp-for="Country" class="form-control form-control-lg" name="Page.Country" asp-items="@Html.GetEnumSelectList<Country>()">
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Province" class="control-label"></label>
+                <select asp-for="Province" class="form-control form-control-lg" name="Page.Province" asp-items="@Html.GetEnumSelectList<StateProvince>()">
+                </select>
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" name="Page.Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaData" class="control-label"></label>
+                <input asp-for="MetaData" name="Page.MetaData" class="form-control" />
+                <span asp-validation-for="MetaData" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" name="Page.Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input asp-for="IsNewRestaurantShow" name="Page.IsNewRestaurantShow" class="" />
+                <label asp-for="IsNewRestaurantShow" class="control-label">Show newly register restaurants on there added sequence</label>
+                <span asp-validation-for="IsNewRestaurantShow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" name="Page.Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <input asp-for="Latitude" name="Page.Latitude" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Logitude" class="control-label"></label>
+                <input asp-for="Logitude" name="Page.Logitude" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ProvinceTax" class="control-label"></label>
+                <input asp-for="ProvinceTax" name="Page.ProvinceTax" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="InternetTax" class="control-label"></label>
+                <input asp-for="InternetTax" name="Page.InternetTax" class="form-control" />
+            </div>
+            <div class="form-group">
+                <select id="PageLayout" class="form-control form-control-lg section-dropdown" asp-items="@ViewBag.PageLayout">
+                </select>
+            </div>
+            <div id="container" class="form-group">
+                <div class="loader text-center">
+                    <div class="loader-inner">
+
+                        <!-- Animated Spinner -->
+                        <div class="lds-roller mb-3">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <!-- Spinner Description Text [For Demo Purpose]-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@(Model.Id==Guid.Empty?"Add":"Update")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var id = `@Model.Id`;
+            var layoutId = '00000000-0000-0000-0000-000000000000';
+            if (id != '00000000-0000-0000-0000-000000000000')
+                loadsection();
+            $("#PageLayout").on('change', function () {
+                layoutId = $(this).val();
+                loadsection();
+            });
+           function loadsection()
+            {
+               $('#container').load(`/Cms/Page/LayoutPartial/${id}/${layoutId}`, function () {
+
+                   var sectionid = '00000000-0000-0000-0000-000000000000';
+                   var layoutId = '00000000-0000-0000-0000-000000000000';
+                   var location = '00000000-0000-0000-0000-000000000000';
+                   var count = 0;
+                   $(".module-fetch").on('change', function () {
+                       sectionid = $(this).attr('data-section');
+                       location = $(this).attr('data-location');
+                       layoutId = $(this).val();
+                       count = $(this).attr('data-count');
+                       loadmodule();
+                   });
+                   function loadmodule() {
+                       if (layoutId != '00000000-0000-0000-0000-000000000000') {
+                           var el = $("#module_" + count);
+                           el.load(`/Cms/Page/ModulesPartial/${layoutId}/${sectionid}/${location}/${count}`, function () {
+                               $("#myModal_" + count).modal('show');
+                               // var countImages = 0;
+                               //alert("outer");
+                               //$("#addMoreImages").click(function () {
+                               //    alert("Images");
+                               //    var prefix = $("#hdnCarouselPrefix").html();
+                               //    $('#CarouselImport').load(`/Cms/Page/Deals/${prefix}/${countImages}`, function () {
+                               //        var markup = $('#import').html();
+                               //        $('#import').html("");
+                               //        $('#DealsContainer').append(markup);
+                               //        countImages++;
+                               //    });
+                               //});
+                           });
+                       }
+                       layoutId = '00000000-0000-0000-0000-000000000000';
+                   }
+                   id = '00000000-0000-0000-0000-000000000000';
+               });
+            }
+        });
+    </script>
+}

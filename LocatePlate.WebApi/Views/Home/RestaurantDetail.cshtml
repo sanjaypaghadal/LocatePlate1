@@ -1,0 +1,344 @@
+﻿@model LocatePlate.Model.RestaurantDomain.Restaurant
+@{
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+    var IsCoverImageHasValue = !string.IsNullOrEmpty(Model.CoverImages) && Model.CoverImages.Split(',').Length > 0;
+    var host = $"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}";
+}
+<input type="hidden" id="RestaurantModelId" value="@Model.Id" />
+<section class="mb-3">
+    <div class="desktop-detail-page position-relative">
+        @if (IsCoverImageHasValue)
+        {
+            @*<div class="overflow-hidden pr-0">
+                    <div class="large-image-lightbox zoom-img position-relative">
+                        <img src="@Model.MobileCoverImage" class="w-100" />
+                    </div>
+                </div>*@
+
+            <div id="demo" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                    <li data-target="#demo" data-slide-to="0" class="active"></li>
+                    <li data-target="#demo" data-slide-to="1"></li>
+                    <li data-target="#demo" data-slide-to="2"></li>
+                </ul>
+
+                <!-- The slideshow -->
+                <div class="carousel-inner">
+                    @for (int i = 0; i < Model.MobileCoverImages.Count(); i++)
+                    {
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@Model.MobileCoverImages[i]" onerror="this.onerror=null;this.src='@host/images/website/hotelicon.jpg';" class="w-100" />
+                        </div>
+                    }
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+        }
+    </div>
+    <div class="detail-page-mobile">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @if (IsCoverImageHasValue)
+                {
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="@Model.MobileCoverImage" alt="First slide">
+                    </div>
+                }
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <form class="box-shdw bg-white border-radius-4 p-4 my-3">
+            <div class="row align-items-center border-radius-4">
+                <div class="form-group">
+                    <input type="text" class="form-control font-15 text-dark datepicker bold-600" />
+                </div>
+                <div class="form-group">
+                    <select class="form-control font-15 text-dark bold-600">
+                        <option selected>1:30 PM</option>
+                        <option>2:00 PM</option>
+                        <option>4:00 PM</option>
+                        <option>7:00 PM</option>
+                        <option>8:00 PM</option>
+                        <option>9:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control party-size font-15 text-dark bold-600">
+                        <option>1 Guest</option>
+                        <option selected>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                        <option>5 Guests</option>
+                        <option>6 Guests</option>
+                        <option>7 Guests</option>
+                        <option>8 Guests</option>
+                        <option>9 Guests</option>
+                        <option>10 Guests</option>
+                        <option>10 + Guests</option>
+                    </select>
+                </div>
+                <button class="btn bg-primary btn-block text-white font-weight-bold" id="mBookTable">Reserve a Table</button>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="container my-3">
+    <div class="row">
+        <section class="col-md-9">
+            <div class="rest-detail-section">
+                <h1>@Model.Name</h1>
+                <div class="d-flex align-items-center text-dark-grey mb-1 flex-wrap">
+                    @*<div class="d-flex align-items-center mr-3">
+                            <i class="fa fa-money mr-2 font-18" aria-hidden="true"></i> <div class="font-14">$20 for 2 </div>
+                        </div>
+                        <div class="mr-3 font-15"> | </div>*@
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-cutlery mr-2 font-16" aria-hidden="true"></i> <div class="font-14">@Model.Cuisine</div>
+                    </div>
+                    <div class="ml-auto d-flex align-items-center">
+                        @await Html.PartialAsync("_Rating", Model.RatingCount)
+                        <div class="font-18 mr-3">
+                            <span class="ml-2 font-14">@Model.RatingTotalCount reviews</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-dark-grey font-15 mb-1"><i class="fa fa-address-card mr-2" aria-hidden="true"></i>@Model.FullAddress</p>
+            </div>
+            <div class="tabbed-section my-4 bold-600 font-18 d-flex align-items-baseline justify-content-between">
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a href="#menu" class="nav-link btn bg-outline-primary mr-3 text-primary active" data-toggle="pill">Pre order food</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#reviews" class="nav-link btn bg-outline-primary text-primary mr-3" data-toggle="pill">Reviews & Ratings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#restInfo" class="nav-link btn bg-outline-primary text-primary" onclick="DisplayGoogleMap()" data-toggle="pill">Info & Hours</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="border-top border-bottom tab-pane active" id="menu">
+                    <div class="">
+                        <div class="row">
+                            <nav class="col-md-3 border-right" id="spy">
+                                <ul class="pl-0 pt-2 pl-3 my-2 nav nav-pills flex-column">
+                                    <li><input type="hidden" id="url" value="@Model.Url" />
+                                    <li>
+                                    <li><input type="hidden" id="CityName" value="@Model.CityName" /></li>
+                                    @{var menuGroup = Model.Menus.GroupBy(info => info.MenuCategoryName).Select(group => new
+                                        {
+                                            Metric = group.Key,
+                                            Count = group.Count(),
+                                            value = group
+                                        }).OrderBy(x => x.Metric);}
+                                    @foreach (var item in menuGroup)
+                                    {
+                                        var key = item.Metric.Replace(" ", "").Replace('|', '-').Replace('#', '-').Replace('$', '-').Replace('%', '-').Replace('^', '-').Replace('*', '-').Replace('@', '-').Replace('!', '-').Replace('&', '-');
+                                        <li class="nav-item"><a class="nav-link text-nowrap font-14 text-capitalize" href="#@key"> @item.Metric ( @item.Count)</a></li>
+
+                                    }
+                                </ul>
+                            </nav>
+                            <div class="col-md-9">
+                                @foreach (var item in menuGroup)
+                                {
+                                    var key = item.Metric.Replace(" ", "").Replace('|', '-').Replace('#', '-').Replace('$', '-').Replace('%', '-').Replace('^', '-').Replace('*', '-').Replace('@', '-').Replace('!', '-').Replace('&', '-'); ;
+
+                                    <div id="@key" class="mb-2 pt-2 pr-3 my-2">
+                                        <h2 class="font-20 py-2 bold-600 text-capitalize"> @item.Metric</h2>
+                                        @foreach (var value in item.value)
+                                        {
+                                            var thisBlock = Guid.NewGuid();
+                                            <div class="custom-menu mb-3">
+                                                <div class="itemContent">
+                                                    <header class="d-flex">
+                                                        <div class="mr-3">
+                                                            <h2 class="font-16 bold-600">@value.Name</h2>
+                                                            @if (!string.IsNullOrEmpty(value.Calories))
+                                                            {
+                                                                <p> @value.Calories kcal</p>
+                                                            }
+                                                            <p class="description">@value.About</p>
+                                                            <p class="description">@value.Recipes</p>
+
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(value.MobileImages))
+                                                        {
+                                                            <div class="menu-img ml-auto">
+                                                                <img src="@value.MobileImages" />
+                                                            </div>
+                                                        }
+                                                    </header>
+                                                    <table class="variations multiprice mt-2" role="presentation">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="price text-primary font-weight-bold">$@value.Price</td>
+                                                                @if (value.IsAddedToCart)
+                                                                {
+                                                                    <td style="display:none"  class="text-white bg-primary float-right btn cursor-pointer added-to-order bold-600" data-url="@Model.Url" data-city="@Model.CityName" data-menuitem="@value.Id">Added</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="display:none" class="text-primary float-right add-style btn cursor-pointer add-to-order bold-600 bg-outline-primary" data-url="@Model.Url" data-city="@Model.CityName" data-menuitem="@value.Id">Add +</td>
+                                                                }
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-3 rating-review-section tab-pane" id="reviews">
+                    <div class="my-4 rating-review-inner">
+                        <div class="rating-progress mb-4 px-4 py-3 border-radius-4">
+                            <header>
+                                <h3 class="mb-3 font-20">Ratings </h3>
+                            </header>
+                            <div class="avg-rating-section mb-4">
+                                <div class="rating w-100 mt-1 d-flex align-items-center">
+                                    <span class="mr-3 mb-1">@await Html.PartialAsync("_Rating", Model.RatingCount)</span>
+                                    <h4>@Model.RatingTotalCount Total</h4>
+                                </div>
+                                <div>Rated @Model.RatingCount out of 5</div>
+                            </div>
+                            <div>
+
+                                @foreach (var rating in (RatingType[])Enum.GetValues(typeof(RatingType)))
+                                {
+                                    var item = Model?.RatingGroups?.FirstOrDefault(c => c.Key == $"{rating}");
+                                    var avg = item?.AvgPercentage;
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div style="width:10%">
+                                            <div>@rating</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="progress border-radius-0">
+                                                <div class="progress-bar" style="width:@avg.GetValueOrDefault()%"></div>
+                                            </div>
+                                        </div>
+                                        @*<div class="">@(item?.Value?.Count()==null?0:item?.Value?.Count())%</div>*@
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <partial name="_GiveRating" />
+                        <div id="all_user_placeholder">
+                            <partial name="_AllReviews" />
+                        </div>
+                    </div>
+                </div>
+                <div id="restInfo" class="tab-pane border-top py-4">
+                    <div>
+                        <h2 class="bold-600">Restaurant Information</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            @if (!string.IsNullOrEmpty(Model.About))
+                            {
+                                <div class="py-2 pt-4">
+                                    <p class="text-dark-grey font-15 mb-1 text-lowercase rest-about text-justify">@Model.About</p>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Specialities))
+                            {
+                                <div class="py-2">
+                                    <h3>Specialities</h3>
+                                    <div>
+                                        @Model.Specialities
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.FullAddress))
+                            {
+                                <div class="py-2">
+                                    <h3>Address</h3>
+                                    <div>
+                                        <p class="text-dark-grey font-15 mb-1"><i class="fa fa-map-marker mr-2" aria-hidden="true"></i>@Model.FullAddress</p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="py-2">
+                                <h3>Timings:</h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @foreach (var time in Model.Timings)
+                                        {
+                                            <div>@time.Day</div>
+                                        }
+                                    </div>
+                                    <div class="col-md-8">
+                                        @foreach (var time in Model.Timings)
+                                        {
+                                            <div>@(time.IsOpen? (time.StartTimeLocal + " - " +time.CloseTimeLocal): "Close")</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                                <div id="myDiv" class="my-4 w-100" style="height:400px"></div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </section>
+        @await Html.PartialAsync("_Reservation", Model)
+    </div>
+
+    <div id="add-to-order-placeholder">
+    </div>
+    <partial name="_AlertModalPartial" />
+</section>
+@section Scripts {
+    <script src="~/js/RestaurantDetails.js"></script>
+    @*<script type="text/javascript">
+            function DisplayGoogleMap() {
+
+                //Set the Latitude and Longitude of the Map
+                /**/
+                var myAddress = new google.maps.LatLng(-34.397, 150.644);
+                /**/
+
+                //Create Options or set different Characteristics of Google Map
+                var mapOptions = {
+                    center: myAddress,
+                    zoom: 15,
+                    minZoom: 15,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                //Display the Google map in the div control with the defined Options
+                var map = new google.maps.Map(document.getElementById("myDiv"), mapOptions);
+
+                //Set Marker on the Map
+                var marker = new google.maps.Marker({
+                    position: myAddress,
+                    animation: google.maps.Animation.BOUNCE,
+                });
+
+                marker.setMap(map);
+            }
+        </script>*@
+
+}

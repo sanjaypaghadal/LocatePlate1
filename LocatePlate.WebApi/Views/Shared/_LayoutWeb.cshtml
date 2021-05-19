@@ -1,0 +1,122 @@
+﻿@inject LocatePlate.Service.Pages.IPageService _pageService
+@{
+    var restaurantDropDown = new List<SelectListItem>();
+    var locations = _pageService.GetAllAsync().GetAwaiter().GetResult().OrderBy(c => c.Name).ToList();
+    restaurantDropDown.Add(new SelectListItem { Text = "Select", Value = $"{Guid.Empty}" });
+    var Location = this.Context.Request.Query["Location"].ToString();
+    var query = this.Context.Request.Query["Query"].ToString();
+
+    if (TempData["LocationId"] == null)
+        TempData["LocationId"] = Location;
+    else if (string.IsNullOrEmpty(Location))
+        Location = TempData["LocationId"].ToString();
+    if (TempData["query"] == null)
+        TempData["query"] = query;
+    else if (string.IsNullOrEmpty(query))
+        query = TempData["query"].ToString();
+
+    var LocationId = (string.IsNullOrEmpty(Location) ? Guid.Empty : new Guid(Location));
+    if (locations.Any()) locations.ToList().ForEach(c => restaurantDropDown.Add(new SelectListItem { Text = c.Name, Value = $"{c.Id}", Selected = (c.Id == LocationId) }));
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="~/images/website/LocatePlate_Logo.png" type="image/x-icon">
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body class="position-relative" data-spy="scroll" data-target="#spy">
+    <div class="loader text-center">
+        <div class="loader-inner">
+
+            <!-- Animated Spinner -->
+            <div class="lds-roller mb-3">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <!-- Spinner Description Text [For Demo Purpose]-->
+        </div>
+    </div>
+    @*   <nav class="navbar navbar-expand-lg desktop-nav container-fluid">
+        <a class="navbar-brand font-weight-bold text-primary w-50" href="/">*@
+    <nav class="navbar navbar-expand-lg desktop-nav container-fluid justify-content-between">
+        <a class="navbar-brand font-weight-bold text-primary w-50 mr-4" href="/">
+            <img src="~/images/website/Transparent.png" class="w-100" />
+        </a>
+        <button class="navbar-toggler" type="button">
+            <img src="~/images/website/profile-user.png" data-toggle="modal" data-target="#SignupModel" />
+        </button>
+        <div class="nav-search-section">
+            <form asp-action="Search" asp-controller="Home" asp-route-Location="@Location" asp-route-query="@query" method="get">
+                <ul class="navbar-nav">
+                    <li class="nav-item mr-2">
+                        <select name="Location" value="@Location" class="form-control location-detect-nav bold-600 text-dark" asp-items="@restaurantDropDown"></select>
+                        <i class="fa fa-map-marker left-loct-nav text-primary" aria-hidden="true"></i>
+                    </li>
+                    <li class="nav-item">
+                        <div class="input-group align-items-center ui-widget">
+                            <input type="text" name="query" value="@query" class="form-control search-input-nav text-dark font-16" id="search-header" placeholder="Search for restaurants or cusines" aria-label="Recipient's username" aria-describedby="inputGroup-sizing-lg">
+                            <img src="~/images/website/locat-detect.png" id="autodetect" class="left-icon-textbox-nav" />
+                            <div class="input-group-append search-button-nav">
+                                <button type="submit" class="input-group-text btn-primary text-white font-weight-bold border-0 btn" id="inputGroup-sizing-lg"><i class="fa fa-search mr-2" aria-hidden="true"></i>Search </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+            <ul class="d-flex m-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Contact">Help</a>
+                </li>
+                <partial name="_LoginPartialWeb" />
+            </ul>
+
+        </div>
+    </nav>
+    @RenderBody()
+    <footer class="bg-footer desktop-footer position-relative">
+        <div class="text-center pb-4">
+            <div class="pb-3">
+                <img src="~/images/website/Transparent.png" />
+            </div>
+            <div class="text-white">Find the best Restaurants, Deals, Discounts & Offers</div>
+            <ul class="social-links pt-3 pl-0 flex-wrap">
+                <li><a href=""><i class="fa fa-facebook text-primary"></i></a></li>
+                <li><a href=""><i class="fa fa-twitter text-primary"></i></a></li>
+                <li><a href=""><i class="fa fa-instagram text-primary"></i></a></li>
+                <li><a href=""><i class="fa fa-linkedin text-primary"></i></a></li>
+            </ul>
+
+        </div>
+        <div id="copyright-container" class="border-top">
+            <!-- .container start -->
+            <div class="py-3 text-center">
+                <!-- .row start -->
+                <!--<div class="row">-->
+                <!-- .col-md-6 start -->
+                <div class="col-md-6 copyright-center">
+                    <p class="text-white">© Locate Plate 2021. All rights reserved.</p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿@model Dictionary<string, string>
+@{
+    Layout = null;
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#payment").submit();
+    });
+</script>
+@*<form action="https://api.demo.convergepay.com/hosted-payments/transaction_token" method="post" id="payment">
+    <input type="hidden" name="ssl_merchant_id" value="@Model["ssl_merchant_id"]" />
+    <input type="hidden" name="ssl_user_id" value="@Model["ssl_user_id"]" />
+    <input type="hidden" name="ssl_pin" value="@Model["ssl_pin"]" />
+    <input type="hidden" name="ssl_transaction_type" value="@Model["ssl_transaction_type"]" />
+    <input type="hidden" name="ssl_amount" value="@Model["ssl_amount"]" />
+
+    <input type="hidden" name="responseString" value="@Model["responseString"]" />
+
+    <input type="submit" value="Submit" style="display:none" />
+</form>*@
+
+@*<form action="https://esqa.moneris.com/HPPDP/index.php" method="post" id="payment">
+        <input type="hidden" name="cust_id" value="hpVONB4S39TS" />
+        <input type="hidden" name="order_id" value="hpVONB4S39TS" />
+        <input type="hidden" name="gst" value="hpVONB4S39TS" />
+        <input type="hidden" name="pst" value="hpVONB4S39TS" />
+        <input type="hidden" name="hst" value="hpVONB4S39TS" />
+        <input type="hidden" name="shipping" value="hpVONB4S39TS" />
+        <input type="hidden" name="hst" value="hpVONB4S39TS" />
+
+        <input type="hidden" name="ps_store_id" value="@Model["ps_store_id"]" />
+        <input type="hidden" name="hpp_key" value="@Model["hpp_key"]" />
+        <input type="hidden" name="charge_total" value="@Model["charge_total"]" />
+        <input type="hidden" name="rvar1" value="@Model["rvar1"]" />
+
+        <input type="submit" value="Submit" style="display:none" />
+    </form>*@

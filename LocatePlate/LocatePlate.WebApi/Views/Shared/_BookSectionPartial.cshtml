@@ -1,0 +1,52 @@
+﻿@model LocatePlate.Model.RestaurantDomain.Restaurant
+
+<div class="container">
+    <div class="reservation-group mx-5">
+        <form>
+            <div class="row align-items-center p-4 border-radius-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control font-15  text-white border-radius-0" id="datepicker" />
+                        <i class="fa fa-calendar text-white right-icon"></i>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select class="form-control font-15  text-white border-radius-0">
+                            <option selected>1:30 PM</option>
+                            <option>2:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>7:00 PM</option>
+                            <option>8:00 PM</option>
+                            <option>9:00 PM</option>
+                        </select>
+                        <i class="fa fa-clock-o text-white right-icon"></i>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select class="form-control party-size font-15  text-white border-radius-0">
+                            <option>1 Guest</option>
+                            <option selected>2 Guests</option>
+                            <option>3 Guests</option>
+                            <option>4 Guests</option>
+                            <option>5 Guests</option>
+                            <option>6 Guests</option>
+                            <option>7 Guests</option>
+                            <option>8 Guests</option>
+                            <option>9 Guests</option>
+                            <option>10 Guests</option>
+                            <option>10 + Guests</option>
+                        </select>
+                        <i class="icon-people text-white right-icon"></i>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn bg-primary btn-block text-white font-weight-bold" id="BookTable">Book a Table</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+

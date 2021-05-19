@@ -1,0 +1,112 @@
+﻿@model PaginatedList<Menu>
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Menu
+            </h4>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model.Count > 0)
+        {
+        <div class="d-sm-flex align-items-center mb-4 restaurant-create-link">
+            <span class="text-dark ml-auto mb-3 mb-sm-0">@Html.ActionLink("Add Menu Item", "Create", "Menu")</span>
+        </div>
+        <div class="scroll-div">
+            <div class="table-responsive border rounded scroll-div">
+                <table class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+                            <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().MenuCategoryName)</th>
+                            <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().FoodNature)</th>
+                            <th class="font-weigh3t-bold"> Actions </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach (var item in Model)
+                            {
+                        <tr>
+                            <td>
+                                @item.Name.Truncate(40)
+                            </td>
+                            <td>
+                                @item.MenuCategoryName
+                            </td>
+                            <td>
+                                @item.FoodNatureName
+                            </td>
+                            <td class="border-right-0">
+                                <a asp-action="Create" asp-route-id="@item.Id"><img src="~/images/edit.png" class="mr-2" /></a>
+                                @if(!item.IsMenuReservation)
+                                {
+                                <a data-toggle="modal" data-target="#modalDelete" class="cursor-pointer delete-record" asp-action="Delete" asp-route-id="@item.Id"><img src="~/images/trash.png" class="mr-2" /> </a>
+                                }
+                            </td>
+                        </tr>
+                            }
+                    </tbody>
+                </table>
+                <partial name="_DeleteModalPartial" />
+            </div>
+        </div>
+
+        @if (Model.TotalCount > 10)
+            {
+        <div class="d-flex mt-4 flex-wrap">
+            <p class="text-muted">Showing 1 to 10 of @Model.TotalCount entries</p>
+            <nav class="ml-auto">
+                <ul class="pagination separated pagination-info">
+                    @*@if (Model.HasPreviousPage )
+                        {
+                            <li class="page-item"><a asp-controller="Restaurant" asp-action="Index" asp-route-pageindex="@Convert.ToInt32(Model.PageIndex)-1" class="page-link"><i class="icon-arrow-right"></i></a></li>
+                        }*@
+                    <li class="page-item"><a href="" class="page-link"><i class="icon-arrow-left"></i></a></li>
+                    @for (var i = 1; i <= Model.TotalPages; i++)
+                            {
+                    <li class="page-item @(i == Model.PageIndex)?'active':''"><a asp-action="Index" asp-route-pageindex="@(i - 1)" class="page-link">@i</a></li>
+                            }
+                    @*@if (Model.HasNextPage)
+                        {
+                            <li class="page-item"><a asp-controller="Restaurant" asp-action="Index" asp-route-pageindex="@Convert.ToInt32(Model.PageIndex)+1" class="page-link"><i class="icon-arrow-right"></i></a></li>
+                        }*@
+                </ul>
+            </nav>
+        </div>
+            }
+        }
+        else
+        {
+        <div class="table-responsive border my-5 rounded">
+            <table class="table">
+                <thead class="text-center">
+                    <tr>
+                        <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+                        <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().MenuCategoryName)</th>
+                        <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.FirstOrDefault().FoodNature)</th>
+                        <th class="font-weight-bold"> Actions </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        @if (!Convert.ToBoolean(ViewBag.IsCategoryAvailable))
+                            {
+                        <td class="font-16px border-right-0" colspan="4">Please add menu category first <span class="mb-3 mb-sm-0">@Html.ActionLink("Add menu category", "Create", "Category")</span> </td>
+                            }
+                            else
+                            {
+                        <td class="font-16px border-right-0" colspan="4">No record found! <span class="mb-3 mb-sm-0">@Html.ActionLink("Add menu item", "Create", "Menu")</span> </td>
+                            }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+</div>
+

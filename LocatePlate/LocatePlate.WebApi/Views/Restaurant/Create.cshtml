@@ -1,0 +1,245 @@
+﻿@model LocatePlate.Model.RestaurantDomain.Restaurant
+@{
+    ViewData["Title"] = "Restaurant Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Restaurant Details
+            </h4>
+        </div>
+    </div>
+    <div class="card-body px-5">
+        <form data-ajax="true" asp-action="Create" enctype="multipart/form-data" class="py-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="About" class="control-label"></label>
+                <textarea asp-for="About" class="form-control" placeholder="About" rows="2"></textarea>
+                <span asp-validation-for="About" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Cuisine" class="control-label"></label>
+                <div class="input-group mb-3">
+                    <input class="form-control tags hdncusine" placeholder="Cuisine" data-target="hdncusine" data-target-container="hdncusinecontainer" />
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="cusineadd">Add</span>
+                    </div>
+                </div>
+                <div class="tag-container my-2" id="hdncusinecontainer">
+                    @if (!string.IsNullOrEmpty(Model.Cuisine) && Model.Cuisine.Split(',').Length > 0)
+                    {
+                        foreach (var tt in Model.Cuisine.Split(',').ToArray())
+                        {
+                            //foreach (var item2 in tt.Split(' ').ToArray())
+                            //{
+                            @if (tt != "")
+                            {
+                                <p class="tag tagcusine">@tt </p>
+                            }
+                            //}
+                        }
+                    }
+                </div>
+                <input type="hidden" asp-for="Cuisine" id="hdncusine" />
+                <span asp-validation-for="Cuisine" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>           
+                <div class="input-group mb-3">
+                    <input class="form-control tags hdntags" placeholder="Tags" data-target="hdntags" data-target-container="hdntagscontainer" />
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="tagsadd" >Add</span>
+                    </div>
+                </div>
+                <div class="tag-container my-2" id="hdntagscontainer">
+                    @if (!string.IsNullOrEmpty(Model.Tags) && Model.Tags.Split(',').Length > 0)
+                    {
+                        foreach (var tt in Model.Tags.Split(',').ToArray())
+                        {
+                            //foreach (var item2 in tt.Split(' ').ToArray())
+                            //{
+                            @if (tt != "")
+                            {
+                                <p class="tag tagtags">@tt </p>
+                            }
+                            //}
+                        }
+                    }
+                </div>
+                <input type="hidden" asp-for="Tags" id="hdntags" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country"></label>
+                <select asp-for="Country" class="form-control form-control-lg" asp-items="@Html.GetEnumSelectList<Country>()">
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Province"></label>
+                <select asp-for="Province" class="form-control form-control-lg" asp-items="@Html.GetEnumSelectList<StateProvince>()">
+                </select>
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control form-control-lg" asp-items="@ViewBag.Locations" name="LocationId"></select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Longitude" class="control-label"></label>
+                <input asp-for="Longitude" class="form-control" placeholder="Locality" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <input asp-for="Latitude" class="form-control" placeholder="Locality" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Locality" class="control-label"></label>
+                <input asp-for="Locality" class="form-control" placeholder="Locality" />
+                <span asp-validation-for="Locality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullAddress" class="control-label"></label>
+                <textarea asp-for="FullAddress" class="form-control" placeholder="Full Address" rows="2"></textarea>
+                <span asp-validation-for="FullAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group multiple-uploads">
+                <label asp-for="CoverImages" class="control-label"></label>
+                <input asp-for="CoverImages" class="form-control files" type="file" onsubmit="AJAXSubmit(this);return false;" multiple accept="image/*" />
+                <span asp-validation-for="CoverImages" class="text-danger"></span>
+                <input type="hidden" class="form-control" asp-for="CoverImages" />
+                @if (!string.IsNullOrEmpty(Model.CoverImages) && Model.CoverImages.Split(',').Length > 0)
+                {
+                    foreach (var item in Model.CoverImages.Split(',').ToArray())
+                    {
+                        <div class="fileuploader-items">
+                            <ul class="fileuploader-items-list">
+                                <li class="fileuploader-item file-has-popup file-type-image file-ext-png w-100">
+                                    <div class="columns" name="@item">
+                                        <div class="column-thumbnail">
+                                            <div class="fileuploader-item-image fileuploader-no-thumbnail">
+                                                <div style="background-color: #298a22" class="fileuploader-item-icon">
+                                                    @*<img src="~/UploadImages/@Model.UserId/@Model.Name/@item" />*@
+                                                    @item.Split(".").Last()
+                                                </div>
+                                            </div>
+                                            <span class="fileuploader-action-popup"></span>
+                                        </div>
+                                        <div class="column-title">
+                                            <div title=@item name=@item class="title-col">@item</div>
+                                        </div>
+                                        <div class="column-actions">
+                                            <a data="@item" class="fileuploader-action fileuploader-action-remove custom-cover-delete-img custom-delete-img" name=@item><i></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                }
+                @*7347012773*@
+            </div>
+            <div class="form-group">
+                <label asp-for="PinCode" class="control-label"></label>
+                <input asp-for="PinCode" class="form-control" placeholder="Pin Code" />
+                <span asp-validation-for="PinCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Specialities" class="control-label"></label>
+                <input asp-for="Specialities" class="form-control" placeholder="Specialities" />
+                <span asp-validation-for="Specialities" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recommendations" class="control-label"></label>
+                <input asp-for="Recommendations" class="form-control" placeholder="Recommendations" />
+                <span asp-validation-for="Recommendations" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="CostForTwo" class="control-label"></label>
+                    <input asp-for="CostForTwo" class="form-control" placeholder="Recommendations" />
+                    <span asp-validation-for="CostForTwo" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="ResturantType" class="control-label"></label>
+                <select asp-for="ResturantType" class="form-control form-control-lg" asp-items="@Html.GetEnumSelectList<ResturantType>()" id="SelectRestaurantType" name="ResturantType">
+                    <option>Select</option>
+                </select>
+                <span asp-validation-for="ResturantType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group py-2">
+                <input type="submit" value="@(Model.Id==0?"Add":"Update")" class="btn btn-primary" />
+            </div>
+            <input type="hidden" name="MenuImagesToDelete" id="MenuImagesToDelete" />
+            <input type="hidden" name="CoverImagesToDelete" id="CoverImagesToDelete" />
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Province").on('change', function () {
+                var countryId = $('#Country').val();
+                var provinceId = $(this).val();
+                var regionsSelect = $('#LocationId');
+                regionsSelect.empty();
+                $.ajax({
+                    type: "GET",
+                    url: `/api/v1/Location/GetCityByCountryProvince/${countryId}/${provinceId}`,
+                    success: function (regions) {
+                        if (regions != null && !jQuery.isEmptyObject(regions)) {
+                            regionsSelect.append($('<option/>', {
+                                value: '00000000-0000-0000-0000-000000000000',
+                                text: "Select City"
+                            }));
+                            $.each(regions, function (index, region) {
+                                $('#LocationId').append("<option value='" + region.id + "'>" + region.name + "</option>");
+                            });
+                        } else {
+                            regionsSelect.append($('<option/>', {
+                                value: '00000000-0000-0000-0000-000000000000',
+                                text: "No City"
+                            }));
+                        }
+                    },
+                    failure: function (response) {
+                    }
+                });
+            });
+
+            $(".custom-menu-delete-img").click(function () {
+                setdeleteImages($(this), 'MenuImagesToDelete');
+            });
+
+            $(".custom-cover-delete-img").click(function () {
+                setdeleteImages($(this), 'CoverImagesToDelete');
+            });
+
+            function setdeleteImages(el, methodToDelete) {
+                var img = el.attr("data");
+                var hdnElement = $(`#${methodToDelete}`);
+                var hdn = hdnElement.val();
+                hdnElement.val(hdn + "," + img);
+            }
+            $('#restaurantlist').val('@Model.Id');
+        });
+    </script>
+}
+

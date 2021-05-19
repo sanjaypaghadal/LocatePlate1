@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Capacity>
+
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Capacity
+            </h4>
+        </div>
+    </div>
+    <div class="card-body">
+       
+        <p>Add tables/capacity for @ViewBag.LocationName which are avaiable to book online for Locate Plate users.</p>
+        <div class="py-4 scroll-div">
+            <div class="table-responsive border rounded scroll-div">
+                <form data-ajax="true" asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <table class="table">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.TableName)</th>
+                                <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.Size)</th>
+                                <th class="font-weight-bold"> @Html.DisplayNameFor(model => model.Area)</th>
+                                <th class="font-weight-bold"> Actions </th>
+
+                            </tr>
+                        </thead>
+                        <tbody class="text-center" id="bodyCapacity">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TableName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Size)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Area)
+                                    </td>
+                                    <td class="border-right-0">
+                                        <a asp-action="Create" asp-route-id="@item.Id"><img src="~/images/edit.png" class="mr-2" /></a>
+                                        <a data-toggle="modal" data-target="#modalDelete" class="cursor-pointer delete-record" asp-action="Delete" asp-route-id="@item.Id"><img src="~/images/trash.png" class="mr-2" /> </a>
+                                    </td>
+                                </tr>
+                                <partial name="_DeleteModalPartial" />
+                            }
+
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="Table Name" name="TableName" class="form-control text-center" required />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control text-center" name="Size" placeholder="Size" required />
+                                </td>
+                                <td>
+                                    <select name="Area" asp-items="@Html.GetEnumSelectList<Area>()" class="form-control" required>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" type="submit">Add</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

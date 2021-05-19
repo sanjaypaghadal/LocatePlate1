@@ -1,0 +1,7 @@
+﻿@model LocatePlate.Model.Cms.Modules.Module
+@if (Model?.DealModule != null)@Html.RenderPartialAsync("_DealModule", Model.DealModule)
+@if (Model?.AdvertisementModule != null)@Html.RenderPartialAsync("_AdvertisementModule", Model.AdvertisementModule)
+@if (Model?.CardsVerticalModule != null)@Html.RenderPartialAsync("_RestaurantsListingModule", Model.CardsVerticalModule)
+@if (Model?.WALFModule != null)@Html.RenderPartialAsync("_WALFModule", Model.WALFModule)
+@if (Model?.SearchButtonsModule != null)@Html.RenderPartialAsync("_SearchButtonsModule", Model.SearchButtonsModule)
+

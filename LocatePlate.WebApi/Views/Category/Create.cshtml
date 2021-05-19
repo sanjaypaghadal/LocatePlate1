@@ -1,0 +1,31 @@
+﻿@model LocatePlate.Model.RestaurantDomain.MenuCategory
+
+@{
+//ViewData["Title"] = "Menu Category Details";
+}
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Menu Category
+            </h4>
+        </div>
+    </div>
+    <div class="card-body px-5">
+        <form data-ajax="true" asp-action="Create" class="py-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group py-2">
+                <input type="submit" value="@(Model.Id==0?"Add":"Update")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

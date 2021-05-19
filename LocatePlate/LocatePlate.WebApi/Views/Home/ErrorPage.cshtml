@@ -1,0 +1,25 @@
+﻿@{ Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href='~/css/home-style.css' />
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+</head>
+<body>
+    <section class="position-absolute page-not-found">
+        <div class="container">
+            <div class="text-center">
+                <img src="~/images/website/404.png" />
+                <h1 class="2.5em">Page not found!</h1>
+                <p>Uh-oh! Looks like the page you are trying to access, doesn't <br>exist. Please start afresh.</p>
+                <a onclick="window.history.back();" class="btn btn-primary text-white go-back-btn">Go Back Home</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

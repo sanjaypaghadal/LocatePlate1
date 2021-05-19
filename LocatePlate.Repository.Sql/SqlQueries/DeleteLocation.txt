@@ -1,0 +1,52 @@
+﻿/****** Object:  StoredProcedure [dbo].[Deletelocation]    Script Date: 2/20/2021 3:13:56 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      
+-- Create Date: 
+-- Description: 
+-- =============================================
+create PROCEDURE [dbo].[deletelocation] (@locationId UNIQUEIDENTIFIER)
+AS
+  BEGIN
+      -- SET NOCOUNT ON added to prevent extra result sets from
+      -- interfering with SELECT statements.
+      SET nocount ON
+
+      -- Insert statements for procedure here
+      DECLARE @restaurantIds VARCHAR(max);
+
+      SELECT @restaurantIds = COALESCE(@restaurantIds+',', '')
+                              + Cast(id AS VARCHAR(10))
+      FROM   restaurants
+      WHERE  locationid = @LocationId;
+
+      DECLARE @SQL VARCHAR(max);
+
+      SET @SQL= 'delete [dbo].Bookings where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].MenuReservation where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Ratings where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Reviews where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].MenuCategories where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Menus where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Discounts where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Capacities where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].Timings where Id  IN ('
+                + @restaurantIds + ');'
+                + 'delete [dbo].restaurants where Id  IN ('
+                + @restaurantIds + ');'
+
+      EXECUTE (@SQL);
+  END
+

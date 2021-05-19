@@ -1,0 +1,85 @@
+﻿USE [LocatePlate]
+GO
+/****** Object:  StoredProcedure [dbo].[LocatePlateSearchDeals]    Script Date: 2/7/2021 11:26:02 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+      ALTER PROCEDURE [dbo].[LocatePlateSearchDeals] --'deal25','717867ed-943c-497a-b20f-c32b3f362e0d','Subway,hOt','suppe','Vegan',1,10,'',0
+	  ( 		-- Add the parameters for the stored procedure here
+      @query varchar(25),
+	  @location uniqueidentifier,
+	  @Cuisine varchar(100)=',',
+	  @Categories varchar(100)=',',
+	 -- @MealType varchar(100)=',',
+	  @FoodType varchar(100)=',',
+	  @PageNumber int,
+	  @RowsOfPage int,
+	  @SortingCol AS VARCHAR(100),
+      @SortType AS int) AS 
+      BEGIN
+         -- SET NOCOUNT ON added to prevent extra result sets from
+         -- interfering with SELECT statements.
+         SET
+            NOCOUNT 
+            ON 
+            SELECT
+			   Id= NEWID(),
+		       RestaurantId = r.Id,
+               Name= r.Name,
+               CityName= r.CityName,
+			   LocationId= r.LocationId,
+               Url = r.Url,
+			   Dish='',
+               MealType ='',
+               FoodType ='',
+               FoodCategory = m.MenuCategoryName,
+			   Images= r.CoverImages,
+			   Cuisine=r.Cuisine,
+			   CostForTwo=r.CostForTwo,
+			   FullAddress=r.FullAddress,
+			   UserId= r.UserId,
+			   RatingCount= AVG(ra.Rating),
+			   ReviewCount = sum(case when re.Review != null and re.Review != '' then 1 else 0 end),
+			   AllCount = COUNT(*) OVER()
+            FROM
+               [dbo].[Restaurants] as r 
+               inner JOIN [dbo].Discounts as d 
+                  on d.RestaurantId = r.Id 
+			   LEFT OUTER JOIN [dbo].Menus AS m ON m.RestaurantId = r.Id 
+			   LEFT OUTER JOIN [dbo].Ratings AS ra ON ra.RestaurantId = r.Id 
+			   LEFT OUTER JOIN [dbo].Reviews AS re ON re.RestaurantId = r.Id 
+			   CROSS APPLY STRING_SPLIT(r.Cuisine, ',')
+            where
+               d.DealUrl=@query
+			   and r.LocationId=@location
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](r.Cuisine, ',') AS T1 INNER JOIN [dbo].[Split](@Cuisine, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @Cuisine IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](m.MenuCategoryName, ',') AS T1 INNER JOIN [dbo].[Split]( @Categories, ',') AS T2 on T1.[Item] = T2.[Item]) OR   @Categories IS NULL)
+			 --  And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](r.MealTypeName, ',') AS T1 INNER JOIN [dbo].[Split](@MealType, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @MealType IS NULL)
+			   And  (EXISTS(SELECT T1.[Item]  FROM [dbo].[Split](m.FoodNatureName, ',') AS T1 INNER JOIN [dbo].[Split]( @FoodType, ',') AS T2 on T1.[Item] = T2.[Item]) OR  @FoodType IS NULL)
+            GROUP BY
+               r.id,
+               r.Name,
+               r.Url,
+               r.CityName,
+			   r.LocationId,
+			   r.CoverImages,
+			   r.Cuisine,
+			   r.CostForTwo,
+			   r.FullAddress,
+			   r.CreatedDate,
+			   r.UserId,
+			   m.MenuCategoryName
+			    
+		   order by 
+			   CASE WHEN @SortingCol = 'Rating' AND @SortType =0 THEN AVG(ra.Rating) END ,
+			   CASE WHEN @SortingCol = 'Rating' AND @SortType =1 THEN AVG(ra.Rating) END DESC,
+               CASE WHEN @SortingCol = 'Newest' AND @SortType =0 THEN r.CreatedDate END ,
+               CASE WHEN @SortingCol = 'Newest' AND @SortType =1 THEN r.CreatedDate END DESC
+		 OFFSET (@PageNumber-1)*@RowsOfPage ROWS
+                FETCH NEXT @RowsOfPage ROWS ONLY 
+      END
+
+		 
+
+

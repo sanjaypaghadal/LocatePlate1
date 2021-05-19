@@ -1,0 +1,80 @@
+﻿@model LocatePlate.Model.Cms.PageLayout
+
+@{var count = 0; }
+
+<input type="hidden" value="@Model.Name" name="Page.PageLayout.Name" />
+<input type="hidden" value="@Model.Id" name="Page.PageLayout.Id" />
+@if (Model?.Section != null)
+{
+    @foreach (var item in Model.Section)
+    {
+        <input type="hidden" value="@item.Id" name="Page.PageLayout.Section[@count].Id" />
+        <input type="hidden" value="@item.Name" name="Page.PageLayout.Section[@count].Name" />
+        <input type="hidden" value="@item.Markup" name="Page.PageLayout.Section[@count].Markup" />
+        <input type="hidden" value="@item.DeviceType" name="Page.PageLayout.Section[@count].DeviceType" />
+      
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-5">
+                    @Html.Raw(item.Markup)
+                </div>
+                <div class="col-md-5">
+                    <select data-count="@count" data-section="@item.Id" data-location="@Model.LocationId" class="form-control form-control-lg module-fetch" asp-items="@ViewBag.ModuleDropDown">
+                    </select>
+                </div>
+                <div class="col-md-2 text-center">
+                    <a class="btn btn-primary text-white" data-toggle="modal" data-target="#myModal_@count">Open</a>
+                </div>
+            </div>
+        </div>
+        <div id="myModal_@count" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content bg-white w-800">
+                    <div class="modal-header align-items-center px-4 py-3">
+                        <h4 class="modal-title w-100">Module</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div id="module_@count" class="form-group">
+                            @if (item.Module?.DealModule != null)
+                            {
+                                item.Module.DealModule.PageId = Model.LocationId;
+                                ViewBag.prefix = $"Page.PageLayout.Section[{count}].Module.DealModule.";
+                                Html.RenderPartial("_DealModule", item.Module.DealModule);
+                            }
+                            else if (item.Module?.AdvertisementModule != null)
+                            {
+                                item.Module.AdvertisementModule.PageId = Model.LocationId;
+                                ViewBag.prefix = $"Page.PageLayout.Section[{count}].Module.AdvertisementModule.";
+                                Html.RenderPartial("_AdvertisementModule", item.Module.AdvertisementModule);
+                            }
+                            else if (item.Module?.CardsVerticalModule != null)
+                            {
+                                item.Module.CardsVerticalModule.PageId = Model.LocationId;
+                                ViewBag.prefix = $"Page.PageLayout.Section[{count}].Module.CardsVerticalModule.";
+                                Html.RenderPartial("_RestaurantsListingModule", item.Module.CardsVerticalModule);
+                            }
+                            else if (item.Module?.WALFModule != null)
+                            {
+                                item.Module.WALFModule.PageId = Model.LocationId;
+                                ViewBag.prefix = $"Page.PageLayout.Section[{count}].Module.WALFModule.";
+                                Html.RenderPartial("_WALFModule", item.Module.WALFModule);
+                            }
+                            else if (item.Module?.SearchButtonsModule?.Buttons != null)
+                            {
+                                item.Module.SearchButtonsModule.PageId = Model.LocationId;
+                                ViewBag.prefix = $"Page.PageLayout.Section[{count}].Module.SearchButtonsModule.";
+                                Html.RenderPartial("_SearchButtonsModule", item.Module.SearchButtonsModule);
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        count++;
+    }
+}

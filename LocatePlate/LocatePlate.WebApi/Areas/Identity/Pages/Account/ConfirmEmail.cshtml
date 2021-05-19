@@ -1,0 +1,61 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+    Layout = null;
+}
+
+<body style="margin: 0; background: #F9FAFB;">
+    <center>
+        <div class="container" style="width:750px; margin-top:130px; font-family: sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-size:14px;">
+            <div class="row">
+                <div class="table-responsive">
+                    <table style="width: 100%;border-bottom: 5px solid #000;background: #fff;border-top: 5px solid #000;" cellspacing="0" cellpadding="0" border="0">
+                        <tbody style="width:500px; height:200px;">
+                            <tr>
+                                <td><a><img src="~/images/website/Transparent.png" class="w-100" height="70" width="200" style="margin: 10px auto; display: block;"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table style="width: 100%; background: #fff;" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            <tr style="margin:0 auto; display:table; ">
+                                <td style="padding-top:40px;font-weight:bold;border-bottom: 2px solid #fdc317;font-size: 25px;border-bottom: 2px dotted #cc0202; padding-bottom: 10px;color: #cc0202;">Confirmation Email</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:15px; text-align:center;color: #acd342; font-weight: 700;">You are Successfully Registered !</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center; padding-top: 15px; font-size: 15px;">OTP:</td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align:center;  padding-top: 15px; font-size: 15px;">Address:</td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align: center;  padding-bottom: 30px;font-weight: bold; font-size: 25px;  padding-top:15px;"> Thank you !</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 5px solid #000;padding-bottom: 30px; text-align:center;">
+                                    
+                                    @if (HttpContext.Request.Query["type"] == "1")
+                                    {
+                                        <a href="/Identity/Account/Login" style="text-decoration:none;">Back To Login</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Account/Login" style="text-decoration:none;">Back To Login</a>
+                                    }
+                                </td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </center>
+
+</body>

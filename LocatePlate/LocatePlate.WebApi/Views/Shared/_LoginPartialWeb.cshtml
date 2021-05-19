@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@inject SignInManager<UserIdentity> SignInManager
+@inject UserManager<UserIdentity> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
+@inject LocatePlate.Service.Services.Users.IUserService userService;
+
+@if (User?.Identity?.Name == null)
+{
+    <form>
+        @*<a class="btn bg-primary text-white my-2 my-sm-0 mr-2 text-nowrap cursor-pointer" data-toggle="modal" data-target="#SignupModel" id="LoginWeb">Sign in</a>*@
+        <a class="btn btn-primary my-2 my-sm-0 mr-2 text-nowrap cursor-pointer nav-signup" id="LoginWeb" href="@Url.Action("Index", "Account")?returnurl=@(contextAccessor.HttpContext.Request.Path)">Sign in</a>
+
+    </form>
+}
+else
+{
+    //var res =UserManager.GetUserAsync(User.Identity).GetAwaiter().GetResult();
+
+    <li class="nav-item">
+        <a class="nav-link" href="/RestaurantOrderHistory">Order history</a>
+    </li>
+    <li class="nav-item">
+        <a class="profile nav-link">@userService.GetUserById(new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier))).BusinessName</a>
+    </li>
+    <li class="nav-item">
+        <form data-ajax="true" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="btn-logout nav-link btn btn-link bg-outline-primary text-primary">Logout</button>
+        </form>
+    </li>
+
+}

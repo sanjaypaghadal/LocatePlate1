@@ -1,0 +1,119 @@
+﻿@model LocatePlate.Model.RestaurantDomain.Menu
+@{
+    ViewData["Title"] = "Menu Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Menu Details
+            </h4>
+        </div>
+    </div>
+    <div class="card-body px-5">
+        <form data-ajax="true" asp-action="Create" enctype="multipart/form-data" class="py-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MenuCategoryId" class="control-label">Menu Category</label>
+                <select asp-for="MenuCategoryId" asp-items="ViewBag.MenuCategories" class="form-control"></select>
+                <span asp-validation-for="MenuCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Calories" class="control-label"></label>
+                <input asp-for="Calories" class="form-control" placeholder="Name" />
+                <span asp-validation-for="Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" placeholder="Price" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="singleupload">
+                <label asp-for="Images" class="control-label"></label>
+                <input asp-for="Images" class="form-control files" type="file" onsubmit="AJAXSubmit(this);return false;" accept="image/*" />
+                <span asp-validation-for="Images" class="text-danger"></span>
+                <input type="hidden" class="form-control" asp-for="Images" />
+                @if (Model != null && !string.IsNullOrEmpty(Model.Images))
+                {
+                    @*@if (!string.IsNullOrEmpty(Model.Images) && Model.Images.Split(',').Length > 0)
+                        {*@
+                    //foreach (var item in Model.Images.Split(',').ToArray())
+                    //{
+                    <div class="fileuploader-items">
+                        <ul class="fileuploader-items-list">
+                            <li class="fileuploader-item file-has-popup file-type-image file-ext-png w-100">
+                                <div class="columns" name=@Model.Images>
+                                    <div class="column-thumbnail">
+                                        <div class="fileuploader-item-image fileuploader-no-thumbnail">
+                                            <div style="background-color: #298a22" class="fileuploader-item-icon">
+                                                <img src="~/UploadImages/@Model.UserId/@Model.RestaurantName/Menu/@Model.Images" />
+                                            </div>
+                                        </div>
+                                        <span class="fileuploader-action-popup"></span>
+                                    </div>
+                                    <div class="column-title">
+                                        <div title=@Model.Images>@Model.Images</div>
+                                    </div>
+                                    <div class="column-actions">
+                                        <a data="@Model.Images" class="fileuploader-action fileuploader-action-remove custom-menu-delete-img custom-delete-img" name=@Model.Images><i></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    //}
+                    //}
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="About" class="control-label"></label>
+                <textarea asp-for="About" class="form-control" placeholder="About" rows="2"></textarea>
+                <span asp-validation-for="About" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recipes" class="control-label"></label>
+                <textarea asp-for="Recipes" class="form-control" rows="2" placeholder="Recipies"></textarea>
+                <span asp-validation-for="Recipes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodNature" class="control-label">Food Type</label>
+                <select asp-for="FoodNature" asp-items="Html.GetEnumSelectList<FoodNature>()" class="form-control"></select>
+                <span asp-validation-for="FoodNature" class="text-danger"></span>
+            </div>
+            <input type="hidden" name="MenuImagesToDelete" id="MenuImagesToDelete" />
+            <div class="form-group py-2">
+                <input type="submit" value="@(Model.Id==0?"Add":"Update")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $(".fileuploader-input-button").click(function () {
+                $("#custom-edit-image").html('');
+            });
+
+            $(".custom-menu-delete-img").click(function () {
+                setdeleteImages($(this), 'MenuImagesToDelete');
+            });
+
+            function setdeleteImages(el, methodToDelete) {
+                var img = el.attr("data");
+                var hdnElement = $(`#${methodToDelete}`);
+                var hdn = hdnElement.val();
+                hdnElement.val(hdn + "," + img);
+            }
+        });
+    </script>
+}

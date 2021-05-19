@@ -1,0 +1,98 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link rel="icon" href="~/images/website/LocatePlate_Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/css/Dashboard.css" rel="stylesheet" />
+    <!-- End layout styles -->
+    @*<link rel="shortcut icon" href="~/images/favicon.png" />*@
+</head>
+<body class="bg-img">
+    <div class="overlay"></div>
+    <div class="container-scroller overlay-2">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow">
+                    <div class="col-lg-7 mx-auto">
+                        <div class="row bg-login-form">
+                            @*<div class="col-md-5 overlay-welcome">
+                            </div>*@
+                            <div class="col-md-7 auth-form-light text-left p-5 mx-auto ">
+
+                                <h4 class="text-center">Sign in to Locate Plate</h4>
+                                <form data-ajax="true" id="account" method="post">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="form-group pt-2">
+                                        <label asp-for="Input.UserName"></label>
+                                        <input asp-for="Input.UserName" class="form-control" />
+                                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Input.Password"></label>
+                                        <input asp-for="Input.Password" class="form-control" id="InputPassword" />
+                                        <i class="icon-eye" id="togglePassword"></i>
+                                        <a href="/identity/Account/forgotpassword" class="d-block text-right">Forgot Password?</a>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" asp-for="Input.RememberMe"> @Html.DisplayNameFor(m => m.Input.RememberMe)<i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-1">
+                                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                    </div>
+                                    <div class="mt-3 mb-4 text-center">
+                                        <p>
+                                            Don't have an account?<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"> Register</a>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @section Scripts {
+            <partial name="_ValidationScriptsPartial" />
+        }
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script>
+            $("#togglePassword").click(function () {
+                if ($("#InputPassword").val() !== "" && $(this).hasClass("icon-eye")) {
+                    $(this).removeClass("icon-eye");
+                    $(this).addClass("fa fa-eye-slash");
+                    $("#InputPassword").attr("type", "text");
+                } else {
+                    $(this).addClass("icon-eye");
+                    $(this).removeClass("fa fa-eye-slash");
+                    $("#InputPassword").attr("type", "password");
+                }
+            });
+        </script>
+
+    </div>
+</body>
+</html>

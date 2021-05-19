@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Timing>
+
+@{
+    ViewData["Title"] = "Timing";
+}
+<div class="card">
+    <div class="card-header card-header-rose card-header-text">
+        <div class="card-head bg-primary">
+            <h4 class="card-title-top text-white">
+                Timings
+            </h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <form data-ajax="true" class="forms-sample" asp-action="Create">
+            <input type="hidden" id="ClientZoneInfo" name="Timing[0].ClientZoneInfo" />
+            <input name="Timing[0].Day" type="hidden" value="@Days.Monday" />
+            <input name="Timing[1].Day" type="hidden" value="@Days.Tuesday" />
+            <input name="Timing[2].Day" type="hidden" value="@Days.Wednesday" />
+            <input name="Timing[3].Day" type="hidden" value="@Days.Thursday" />
+            <input name="Timing[4].Day" type="hidden" value="@Days.Friday" />
+            <input name="Timing[5].Day" type="hidden" value="@Days.Saturday" />
+            <input name="Timing[6].Day" type="hidden" value="@Days.Sunday" />
+            <div class="py-3 scroll-div">
+                <div class="table-responsive border rounded scroll-div">
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center primary-color text-dark">
+                                <th class="border-bottom-color">Weekdays</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <th class="text-dark border-bottom-color">Is Off</th>
+                                @{var count = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <label class="form-check-label" style="margin: 0; line-height: unset;">
+                                                    <input type="checkbox" name="Timing[@count].IsOpen" value="@item.IsOpen.ToString()" id="@("isopen" + count)" checked="@item.IsOpen" index="@count" class="form-check-input isopencheck">Is Open
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    count++;
+                                }
+                            </tr>
+                            @{count = 0; }
+                            <tr class="text-center">
+                                <th class="text-dark border-bottom-color">Open</th>
+                                @foreach (var item in Model)
+                                {
+                                    <td><input type="time" disabled="@(!item.IsOpen)" name="Timing[@count].StartTime" id="@("starttime" + count)" value="@item.StartTime.TimeOfDay" class="timepicker" /></td>
+                                    <input name="Timing[@count].Id" type="hidden" value="@item.Id" />
+                                    count++;
+                                }
+                            </tr>
+                            @{count = 0; }
+                            <tr class="text-center">
+                                <th class="text-dark">Close</th>
+                                @foreach (var item in Model)
+                                {
+                                    <td><input type="time" disabled="@(!item.IsOpen)" name="Timing[@count].CloseTime" id="@("closetime" + count)" value="@item.CloseTime.TimeOfDay" class="timepicker" /></td>
+                                    count++;
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                @*<input type="hidden" asp-for="" id=StartTimeArray/>*@
+                <div class="mt-4">
+                    <button class="btn btn-primary" type="submit" id="timing">Submit</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.isopencheck').click(function () {
+            if ($(this).prop("checked") == true) {
+                $(this).val(true);
+                $("#starttime" + $(this).attr('index')).attr('disabled', false);
+                $("#closetime" + $(this).attr('index')).attr('disabled', false);
+            }
+            else {
+                $(this).val(false);
+                $("#starttime" + $(this).attr('index')).attr('disabled', true);
+                $("#closetime" + $(this).attr('index')).attr('disabled', true);
+            }
+        });
+
+        //$(document).ready(function () {
+        //    $('input.timepicker').timepicker({
+        //        timeFormat: 'HH:mm:ss',
+        //        minTime: '11:45:00', // 11:45:00 AM,
+        //        maxHour: 20,
+        //        maxMinutes: 30,
+        //        startTime: new Date(0, 0, 0, 15, 0, 0), // 3:00:00 PM - noon
+        //        interval: 15 // 15 minutes
+        //    });
+        //});
+    });
+</script>

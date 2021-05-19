@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using System;
+@inject SignInManager<UserIdentity> SignInManager
+@inject UserManager<UserIdentity> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
+@model Restaurant
+
+@if (User.Identity.Name != null)
+{
+    var UserId = new Guid(contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+    <div class="give-review-section border-radius-4 p-4 mb-4">
+        <header class="mb-3">
+            <h3 class="font-20">Leave Rating and Review</h3>
+        </header>
+        <div class="mb-3 d-flex align-items-center">
+            <table class="w-50 mr-5 border text-center" border="1">
+
+                @foreach (var rating in (RatingType[])Enum.GetValues(typeof(RatingType)))
+                {
+                    var item = Model?.RatingGroups?.FirstOrDefault(c => c.Key == $"{rating}" && c.Value.Any(s => s.UserId == UserId))?.Value?.FirstOrDefault(c => c != null).Rating;
+                    <tr>
+                        <th class="px-5">@rating</th>
+                        <td class="w-50">
+                            <div class="ratePlace rating">
+                                @for (int i = 5; i > 0; i--)
+                                {
+                                    var style = "color: rgb(238, 238, 238);";
+                                    if (i <= (int)item.GetValueOrDefault())
+                                        style = "color: rgb(204, 2, 2);";
+
+                                    <input class="star-button" type="radio" id="field1_star(@rating@i)" style="@style" rating-type="@rating" name="@rating" value="@i">
+                                    <label for="field1_star(@rating@i)" style="@style" rating-type="@rating" title="text" class="full"></label>
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="w-50">
+                <form id="revew-form">
+                    <div class="mb-3">Write Your Review</div>
+                    <input type="hidden" value="@Model.Id" name="RestaurantId"/>
+                    <textarea rows="3" class="form-control mb-3" id="review-area" name="Review"></textarea>
+                    <button class="btn btn-primary font-14 font-weight-bold" id="submit-review" type="button">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+

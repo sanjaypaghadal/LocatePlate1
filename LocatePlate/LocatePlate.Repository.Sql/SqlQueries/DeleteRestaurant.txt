@@ -1,0 +1,31 @@
+﻿/****** Object:  StoredProcedure [dbo].[deleterestaurant]    Script Date: 2/25/2021 11:26:02 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      
+-- Create Date: 
+-- Description: 
+-- =============================================
+ALTER PROCEDURE [dbo].[deleterestaurant] (@restaurantId varchar(max)) 
+AS
+  BEGIN
+      -- SET NOCOUNT ON added to prevent extra result sets from
+      SET nocount ON
+      DECLARE @SQL VARCHAR(max);
+      SET @SQL= 'delete [dbo].Bookings where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].MenuReservation where RestaurantId IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Ratings where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Reviews where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].MenuCategories where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Menus where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Discounts where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Capacities where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].Timings where RestaurantId  IN ('+ @restaurantId + ');'
+                + 'delete [dbo].restaurants where Id  IN ('+ @restaurantId + ');'
+
+      EXECUTE (@SQL);
+  END
+

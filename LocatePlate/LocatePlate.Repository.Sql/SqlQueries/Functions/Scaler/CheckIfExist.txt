@@ -1,0 +1,83 @@
+﻿USE [LocatePlate]
+GO
+/****** Object:  UserDefinedFunction [dbo].[CheckIfExist]    Script Date: 2/7/2021 12:50:27 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+--USE [LocatePlate]
+--GO
+--/****** Object:  UserDefinedFunction [dbo].[BreakStringIntoRows]    Script Date: 2/7/2021 11:38:08 AM ******/
+--SET ANSI_NULLS ON
+--GO
+--SET QUOTED_IDENTIFIER ON
+--GO
+
+--		ALTER FUNCTION [dbo].[BreakStringIntoRows] (@CommadelimitedString   varchar(max))
+--RETURNS   @Result TABLE (Column1   VARCHAR(100))
+--AS
+--BEGIN
+--        DECLARE @IntLocation INT
+--        WHILE (CHARINDEX(',',    @CommadelimitedString, 0) > 0)
+--        BEGIN
+--              SET @IntLocation =   CHARINDEX(',',    @CommadelimitedString, 0)      
+--              INSERT INTO   @Result (Column1)
+--              --LTRIM and RTRIM to ensure blank spaces are   removed
+--              SELECT RTRIM(LTRIM(SUBSTRING(@CommadelimitedString,   0, @IntLocation)))   
+--              SET @CommadelimitedString = STUFF(@CommadelimitedString,   1, @IntLocation,   '') 
+--        END
+--        INSERT INTO   @Result (Column1)
+--        SELECT RTRIM(LTRIM(@CommadelimitedString))--LTRIM and RTRIM to ensure blank spaces are removed
+--        RETURN 
+--END
+
+--USE [LocatePlate]
+--GO
+--/****** Object:  UserDefinedFunction [dbo].[BreakStringIntoRows]    Script Date: 2/7/2021 11:38:08 AM ******/
+--SET ANSI_NULLS ON
+--GO
+--SET QUOTED_IDENTIFIER ON
+--GO
+
+
+ALTER FUNCTION [dbo].[CheckIfExist] ( @CommadelimitedString  varchar(max),   @TableColumnCommadelimitedString  varchar(max))
+RETURNS  varchar(max)
+AS
+BEGIN
+        DECLARE @IntLocation INT
+        DECLARE @TableIntLocation INT
+        DECLARE @OneTableEntity varchar(max)
+        DECLARE @OneEntity varchar(max)
+		DECLARE @Result varchar(max)='initial '
+
+
+        WHILE (CHARINDEX(',', @CommadelimitedString, 0) > 0)
+        BEGIN
+              SET @IntLocation =   CHARINDEX(',',    @CommadelimitedString, 0)      
+             -- INSERT INTO   @Result (Column1)
+              --LTRIM and RTRIM to ensure blank spaces are   removed
+              SET @OneEntity = RTRIM(LTRIM(SUBSTRING(@CommadelimitedString,   0, @IntLocation)))   
+					    Set @Result +=' entityone '+ @OneEntity 
+					   
+
+               WHILE (CHARINDEX(',',    @TableColumnCommadelimitedString, 0) > 0)
+			    BEGIN
+                  SET @TableIntLocation =   CHARINDEX(',',    @TableColumnCommadelimitedString, 0)  
+
+                  SET @OneTableEntity = RTRIM(LTRIM(SUBSTRING(@TableColumnCommadelimitedString,   0, @IntLocation)))  
+					    Set @Result +=' innerentityone '+ @OneTableEntity
+				  
+				     IF(@OneTableEntity=@OneEntity)
+					 BEGIN
+					    Set @Result += ' Match'
+					  -- BREAK;
+					  End
+					    Return @Result;
+
+				 End
+           --   SET @CommadelimitedString = STUFF(@CommadelimitedString,   1, @IntLocation,   '') 
+        END
+					     						   Set @Result += ' UnMatch';
+												   Return @Result
+
+END;

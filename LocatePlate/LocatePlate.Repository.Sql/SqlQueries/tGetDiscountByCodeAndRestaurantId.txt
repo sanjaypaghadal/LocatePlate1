@@ -1,0 +1,25 @@
+﻿USE [LocatePlate]
+GO
+/****** Object:  StoredProcedure [dbo].[GetDiscountByCodeAndRestaurantId]    Script Date: 2/6/2021 3:05:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[GetDiscountByCodeAndRestaurantId] 
+	 (@promoCode varchar(100) ,@restaurantId int)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+			SELECT
+		    *
+            FROM
+             [dbo].[Discounts] 
+		   where PromoCode=@promoCode and RestaurantId=@restaurantId
+   END

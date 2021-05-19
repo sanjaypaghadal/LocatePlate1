@@ -1,0 +1,27 @@
+1) CMS
+   Page layout
+        one column
+         - 100%
+         - 90%
+        two column
+          - 50 %
+          - 40 % 60%
+  
+1 Page
+    Id
+    Name
+    Url
+    pagelayout
+2) PageLayout
+    Name
+3) PageLayoutSection
+    Id
+    Name
+    SectionId
+    DeviceType
+4) Sections
+   Id
+   Name -- OneColumn
+   Html -- 
+   Image --
+       
