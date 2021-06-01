@@ -1,0 +1,75 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "LocatePlate.Infrastructure/1.0.0": {
+        "dependencies": {
+          "AWSSDK.S3": "3.7.0.32",
+          "MongoDB.Bson": "2.11.5"
+        },
+        "runtime": {
+          "LocatePlate.Infrastructure.dll": {}
+        }
+      },
+      "AWSSDK.Core/3.7.0.31": {
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.0.31"
+          }
+        }
+      },
+      "AWSSDK.S3/3.7.0.32": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.0.31"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.S3.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.0.32"
+          }
+        }
+      },
+      "MongoDB.Bson/2.11.5": {
+        "runtime": {
+          "lib/netstandard2.0/MongoDB.Bson.dll": {
+            "assemblyVersion": "2.11.5.0",
+            "fileVersion": "2.11.5.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LocatePlate.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AWSSDK.Core/3.7.0.31": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C2vzPag+Rzb1hBiMUwRW+HQzIrsPxxKBk7EMX0AUxkApg36DOGXI1Aha4xpC0w5sWqRuQAJ3YW0Ihk1nPlBzKA==",
+      "path": "awssdk.core/3.7.0.31",
+      "hashPath": "awssdk.core.3.7.0.31.nupkg.sha512"
+    },
+    "AWSSDK.S3/3.7.0.32": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Por+i5I+nnhx0buPAwJv316wOT8Yx/xSF5Q/wk2uS1K1815/jIsWMQcvIemwyjsIBNrQY4FUk7wwHD4fLizJIQ==",
+      "path": "awssdk.s3/3.7.0.32",
+      "hashPath": "awssdk.s3.3.7.0.32.nupkg.sha512"
+    },
+    "MongoDB.Bson/2.11.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OWsEN7ktxFKcynAMdv08TE5wkL1kkyWJUv+zhO3H3HcK+S4AU52AnxoyVmVSdPk5OWYoTtzbeCOIdmZV2dk5zg==",
+      "path": "mongodb.bson/2.11.5",
+      "hashPath": "mongodb.bson.2.11.5.nupkg.sha512"
+    }
+  }
+}

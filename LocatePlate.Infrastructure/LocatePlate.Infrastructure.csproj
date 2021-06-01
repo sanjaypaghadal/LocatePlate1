@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.0.10" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.0.32" />
     <PackageReference Include="MongoDB.Bson" Version="2.11.5" />
   </ItemGroup>
 

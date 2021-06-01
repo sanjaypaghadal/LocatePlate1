@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace LocatePlate.Infrastructure.Domain
@@ -10,7 +11,11 @@ namespace LocatePlate.Infrastructure.Domain
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
         public int TotalPages { get; private set; }
-
+        
+        //added by binal patel start
+        [NotMapped]
+        public bool isDeleted { get; private set; }
+        //added by binal patel end
         public PaginatedList(IQueryable<T> source, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;

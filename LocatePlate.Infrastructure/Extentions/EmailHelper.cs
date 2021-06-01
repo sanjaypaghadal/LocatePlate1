@@ -61,6 +61,83 @@ namespace LocatePlate.Infrastructure.Extentions
                 return "";
             }
         }
+        public static string UserMailOrderConfirmation(string restaurantName, string orderId, string dateTime,string time, int noOfGuest)
+        {
+            try
+            {
+                string text = System.IO.File.ReadAllText(@"wwwroot\email-templates\User-Order-receive-confirmation-mail.html");
+
+                text = text.Replace("#RestaurantName#", restaurantName);
+                text = text.Replace("#OrderId#", orderId);
+                text = text.Replace("#DateTime#", dateTime);
+                text = text.Replace("#Noofguest#", noOfGuest.ToString());
+                text = text.Replace("#Time#", time);
+                return text;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string MailOrderConfirmation(string restaurantName, string orderId, string dateTime, string time, int noOfGuest)
+        {
+            try
+            {
+                string text = System.IO.File.ReadAllText(@"wwwroot\email-templates\RestaurantOrderReceivedMail.html");
+
+                text = text.Replace("#RestaurantName#", restaurantName);
+                text = text.Replace("#OrderId#", orderId);
+                text = text.Replace("#Date#", dateTime);
+                text = text.Replace("#Noofguest#", noOfGuest.ToString());
+                text = text.Replace("#Time#", time);
+                return text;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string OrderRejectMail(string orderSatus,string orderId, string dateTime, string time, int noOfGuest)
+        {
+            try
+            {
+                string text = System.IO.File.ReadAllText(@"wwwroot\email-templates\Order_Reject_Mail.html");
+
+                text = text.Replace("#OrderStatus#", orderSatus);
+                text = text.Replace("#OrderNo#", orderId);
+                text = text.Replace("#Date#", dateTime);
+                text = text.Replace("#Time#", time);
+                text = text.Replace("#Noofguest#", noOfGuest.ToString());
+                return text;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string AdminContactUsEmail(string Name, string Email, string Mobilenumber, string Message)
+        {
+            try
+            {
+                string text = System.IO.File.ReadAllText(@"wwwroot\email-templates\ContactUs_EmailTemplate.html");
+
+                text = text.Replace("#Name#", Name);
+                text = text.Replace("#Email#", Email);
+                text = text.Replace("#Mobilenumber#", Mobilenumber);
+                text = text.Replace("#Message#", Message);
+                //text = text.Replace("#Noofguest#", noOfGuest.ToString());
+                return text;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
     }
 
 }
