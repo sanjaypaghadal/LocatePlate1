@@ -101,6 +101,9 @@ namespace LocatePlate.Repository.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("VARCHAR(200)");
 
+                    b.Property<int>("CapicityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("VARCHAR(50)");
@@ -121,6 +124,9 @@ namespace LocatePlate.Repository.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCheckOut")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsFoodOrder")
@@ -1003,6 +1009,30 @@ namespace LocatePlate.Repository.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("LocatePlate.Model.RestaurantDomain.UserQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserQuestions");
                 });
 
             modelBuilder.Entity("LocatePlate.Model.Search.SearchResult", b =>

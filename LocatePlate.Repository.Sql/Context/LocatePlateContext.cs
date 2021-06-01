@@ -31,7 +31,8 @@ namespace LocatePlate.Repository.Context
         public DbSet<CurrentLocation> CurrentLocation { get; set; }
         public DbSet<MenuReservation> MenuReservation { get; set; }
         public DbSet<BookingOrderNumber> BookingOrderNumber { get; set; }
-
+        public DbSet<ContactUsModel> ContactUs { get; set; }
+        public DbSet<PerformanceGraph> performanceGraphs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
