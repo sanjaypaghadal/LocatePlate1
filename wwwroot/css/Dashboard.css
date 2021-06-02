@@ -1,0 +1,276 @@
+﻿
+.bg-primary,.btn-primary {
+    background-color: #cc0202 !important;
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #cc0202;
+}
+a {
+    color: #cc0202;
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover {
+    color: #cc0202;
+    text-decoration: underline;
+}
+.sidebar .nav .nav-item.active .nav-link:not(.navbar-brand-mini-wrapper) {
+    background: #cc0202;
+}
+.btn-logout {
+    color: #cc0202 !important;
+    border: 1px solid #cc0202;
+}
+.btn-danger {
+    color: #fff;
+    background-color: #cc0202;
+    border-color: #cc0202;
+}
+.scroll-div::-webkit-scrollbar-thumb {
+    background-color: #cc0202;
+}
+.pagination-info .page-item .page-link:hover {
+    background: #cc0202;
+    border-color: #cc0202;
+    color: #ffffff;
+}
+.pagination .page-item.active .page-link, .pagination .page-item:hover .page-link, .pagination .page-item:focus .page-link, .pagination .page-item:active .page-link {
+    background: #cc0202;
+    border-color: #cc0202;
+    color: #ffffff;
+}
+.form-check .form-check-label input[type="checkbox"]:checked + .input-helper:before {
+    background: #cc0202;
+    border-width: 0;
+}
+.form-check .form-check-label input[type="checkbox"] + .input-helper:before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: solid #cc0202;
+    border-width: 2px;
+    -webkit-transition: all;
+    transition: all;
+    transition-duration: 0s;
+    -webkit-transition-duration: 250ms;
+    transition-duration: 250ms;
+}
+.text-primary {
+    color: #cc0202 !important;
+}
+.card-body h5, .card-body p {
+    font-size: 14px;
+}
+.logoimg {
+    width: 200px !important;
+}
+.success {
+    color: #05b605;
+}
+.Danager {
+    color: #ff0000;
+}
+.bg-login-form {
+    background-image: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.sidebar {
+    min-height: calc(100vh - 70px);
+    /* background: #263238; */
+    background-image: url(../images/mulled-wine.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    font-family: "Open Sans", sans-serif;
+    padding: 0;
+    width: 250px;
+    z-index: 2;
+    transition: width 0.25s ease, background 0.25s ease;
+    -webkit-transition: width 0.25s ease, background 0.25s ease;
+    -moz-transition: width 0.25s ease, background 0.25s ease;
+    -ms-transition: width 0.25s ease, background 0.25s ease;
+}
+table thead {
+    background: #0098db;
+    color: #fff;
+}
+.tablebtn {
+    width: 100px !important;
+    font-size: 12px !important;
+    padding: 10px 15px !important;
+}
+.btn-blue {
+    background: #fff;
+    height: 35px;
+    border: 1px solid #0098db;
+    color: #0098db !important;
+    border-radius: 4px;
+    font-weight: 600;
+    padding: 3px 7px;
+    font-size: 12px;
+}
+.qty {
+    position: absolute;
+    top: -3px;
+    right: 5px;
+    width: 16px;
+    height: 17px;
+    line-height: 17px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 10px;
+    color: #FFF;
+    background-color: #cc0202;
+}
+.clander {
+    height: 43px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 10px;
+}
+.bel-icon {
+    margin-top: 10px;
+    font-size: 20px;
+}
+.custom-control-label::after {
+    position: absolute;
+    top: 0;
+    left: -1.5rem;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    content: "";
+    background: no-repeat 50% / 50% 50%;
+}
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #cc0202;
+    background-color: #cc0202;
+    position: absolute;
+    top: 0px;
+}
+.custom-checkbox .custom-control-label::before {
+    border-radius: 0.25rem;
+    position: absolute;
+    top: 0;
+}
+.btn.btn-gray {
+    border: 1px solid #ddd;
+    background: #ddd !important;
+}
+.fileuploader-input .fileuploader-input-button {
+    background: #e00909 !important;
+    box-shadow: unset !important;
+    border-radius: unset !important;
+    font-size: 14px !important;
+}
+.input-group-append .input-group-text, .input-group-prepend .input-group-text {
+    border-color: #cc0202;
+    color: #fff;
+    background: #cc0202;
+}
+.custom-control-input {
+    position: absolute;
+    z-index: 1;
+    width: 1rem;
+    height: 1.25rem;
+    opacity: 0;
+    background: red;
+    top: -7px;
+    margin-left: 18px;
+}
+@media only screen and (max-width: 1100px) {
+    .content-wrapper {
+        padding: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+@media only screen and (max-width: 800px) {
+    #sidebarVisible {
+        display: block;
+    }
+
+    .desktop-nav {
+        display: none;
+    }
+
+    .mobile-nav {
+        display: flex;
+    }
+
+    .button-position {
+        top: -15px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .card-head {
+        padding: 15px 50px 15px 50px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .qty {
+        right: 55px;
+    }
+
+    .col-md-9 {
+        width: 50% !important;
+    }
+
+    #sidebarVisible {
+        display: none;
+    }
+
+    #toggleButton {
+        display: block;
+    }
+
+    .card-head h4 {
+        font-size: 15px;
+    }
+
+    .table thead th {
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 768px) and (min-width: 320px) {
+    .card-body {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .login-page {
+        margin-top: 50px;
+    }  
+    .col-md-9 {
+        width: 100% !important;
+    }
+    
+    .button-position {
+        right: 0;
+    }
+    .mobile-nav {
+        display: flex;
+    }
+    #toggleButton {
+        display: block;
+    }
+    .qty {
+        right: 15px !important;
+    }
+}
