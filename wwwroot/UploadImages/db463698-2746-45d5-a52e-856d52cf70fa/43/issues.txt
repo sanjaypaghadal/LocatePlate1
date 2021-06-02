@@ -1,0 +1,22 @@
+1)on sign up page, set the max length of mobile number(mobile view)
+2)Booked today but in mail order date showing of january 2021(reported by divya)
+3) when order return then not getting email(reported by divya)
+4)Regular shipping and express shipping charges showing zero on paynow page(reported by divya)
+
+
+Funevent issue
+
+when enter wrong email id and password than pop up message is not showing like entered username and password is wrong(mobile view)
+Product detail page, payment card icon is not showing
+On cart list page and product detail page, Quantity field should be not editable
+Event start time and event date should be show on the product detail page
+after checkout error message showing
+add create event in organizer login
+View ticket from my ticketlist>Ticket status is not showing
+Remove Address field from account setting
+In filters count is showing. Remove count from the filter
+add to wishlist any event for the first time then already in wishlist message showing which is wrong. This message should be not show
+when select any product categories from the product categories then that category product list should be show
+
+
+
