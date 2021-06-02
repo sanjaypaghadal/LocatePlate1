@@ -1,0 +1,35 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "wwwroot/css/home-style.css",
+      "wwwroot/css/swiper-bundle.min.css",
+      "wwwroot/font-awesome-4.7.0/css/font-awesome.min.css",
+      "wwwroot/css/jquery-ui.css",
+      "wwwroot/vendors/simple-line-icons/css/simple-line-icons.css",
+      "wwwroot/css/familyBaloo2wght400_700_display_swap",
+      "wwwroot/css/familyNoto_Sanswght_400_700_display_swap"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.min.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/js/swiper-bundle.min.js",
+      "wwwroot/js/jquery.picEyes.js",
+      "wwwroot/js/jquery-ui.js",
+      "wwwroot/js/home-custom.js",
+      "wwwroot/js/ClientSide.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false,
+    "includeInProject": true
+  }
+]
